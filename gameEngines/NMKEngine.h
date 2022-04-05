@@ -4,10 +4,9 @@
 namespace gameEngines
 {
 
-	class CaptureGoEngine
+	class NMKEngine
 		: public GameEngine
 	{
-		void checkBreath(unsigned long long, unsigned long long *);
 
 	public:
 
@@ -31,11 +30,10 @@ namespace gameEngines
 		virtual unsigned int numberOfPossibleMoves(bool);
 		virtual void GeneratePossibleMoves(GameEngine*, bool);
 
-		CaptureGoEngine();
-		CaptureGoEngine(unsigned long long, unsigned long long);
-		CaptureGoEngine(char *, char *);
+		NMKEngine();
+		NMKEngine(unsigned long long, unsigned long long);
+		NMKEngine(char *, char *);
 
-		unsigned long long pawnsFromStringToLong(char *);
 	};
 
 }
