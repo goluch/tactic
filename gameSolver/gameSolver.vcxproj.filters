@@ -30,6 +30,9 @@
     <ClInclude Include="ProofNumberSearchWrapped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MinMaxAlgorithm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PerformanceCounter.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ProofNumberSearchWrapped.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MinMaxAlgorithm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
