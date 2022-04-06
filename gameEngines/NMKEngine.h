@@ -14,6 +14,10 @@ namespace gameEngines
 		static int K;
 
 		char** board;
+		int emptyFieldsCount;
+		int activePlayer;
+
+		bool gameOver = false;
 
 		static unsigned long long endOfBoardMask;
 		static unsigned long long leftBorderMask;
@@ -26,7 +30,7 @@ namespace gameEngines
 
 		virtual bool isGameOver();
 		virtual unsigned int numberOfPossibleMoves(bool);
-		virtual void GeneratePossibleMoves(GameEngine*, bool);
+		virtual GameEngine* GeneratePossibleMoves();
 
 	};
 

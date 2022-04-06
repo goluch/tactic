@@ -7,26 +7,19 @@ int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
 
-unsigned long long NMKEngine::endOfBoardMask;
-// maska pól osi¹galnych po ruchu o jedno pole w lewo
-// innymi s³owy - posiadaj¹cych po prawej wolne pole (nie granicz¹cymi po prawej z plansz¹)
-unsigned long long NMKEngine::leftBorderMask;
-// maska pól dozwolonych po ruchu o jedno pole w prawo
-// innymi s³owy - posiadaj¹cych po lewej wolne pole (nie granicz¹cymi po lewej z plansz¹)
-unsigned long long NMKEngine::rightBorderMask;
-// maska wszystkich pól
-unsigned long long NMKEngine::fullBoardMask;
-// pomocnicze pola wykorzystywane podczas sprawdzania zakoñczenia rozgrywki
-unsigned long long NMKEngine::possiblyDeadBlackPawns;
-unsigned long long NMKEngine::possiblyDeadWhitePawns;
-
 
 NMKEngine::NMKEngine()
 {
+	emptyFieldsCount = N * M;
+	activePlayer = 0;
 	board = new char*[N];
 	for (int i = 0; i < N; i++)
 	{
 		board[i] = new char[M];
+		for (int j = 0; j < M; j++)
+		{
+			board[i][j] = 0;
+		}
 	}
 }
 
@@ -41,7 +34,7 @@ NMKEngine::~NMKEngine()
 
 
 bool NMKEngine::isGameOver() {
-	return true;
+	return gameOver;
 }
 
 
@@ -52,11 +45,33 @@ unsigned int NMKEngine::numberOfPossibleMoves(bool)
 	return res;
 }
 
-void NMKEngine::GeneratePossibleMoves(GameEngine* possibleMoves, bool isBlackPlayerTurn)
-{	
-	short possibleMovesCount = numberOfPossibleMoves(isBlackPlayerTurn);	
-
-	if (isBlackPlayerTurn)
+GameEngine* NMKEngine::GeneratePossibleMoves()
+{
+	NMKEngine* possibleMoves = new NMKEngine[emptyFieldsCount];
+	int actualPossiblrMoveIndex = 0;
+	for (int k = 0; k < emptyFieldsCount; k++)
 	{
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < M; j++)
+			{
+				if (board[i][j] == 0)
+				{
+					possibleMoves[k].board[i][j] = board[i][j];
+				}
+			}
+		}
 	}
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < M; j++)
+		{
+			if (board[i][j] == 0)
+			{
+				possibleMoves[actualPossiblrMoveIndex++].board[i][j] = 0;
+			}
+		}
+	}
+	activePlayer++ % 2;
+	return possibleMoves;
 }
