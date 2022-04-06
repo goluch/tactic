@@ -3,9 +3,9 @@
 
 using namespace gameEngines;
 
-unsigned int NMKEngine::boardSize;
-unsigned int NMKEngine::fieldsNumber;
-unsigned int GameEngine::maxPossibleMoves;
+int NMKEngine::N;
+int NMKEngine::M;
+int NMKEngine::K;
 
 unsigned long long NMKEngine::endOfBoardMask;
 // maska pól osi¹galnych po ruchu o jedno pole w lewo
@@ -20,26 +20,23 @@ unsigned long long NMKEngine::fullBoardMask;
 unsigned long long NMKEngine::possiblyDeadBlackPawns;
 unsigned long long NMKEngine::possiblyDeadWhitePawns;
 
-void NMKEngine::initialize()
+
+NMKEngine::NMKEngine()
 {
-	GameEngine::maxPossibleMoves = fieldsNumber = boardSize * boardSize;
-	fullBoardMask = 1;
-	for (int i = 1; i < fieldsNumber; i++)
+	board = new char*[N];
+	for (int i = 0; i < N; i++)
 	{
-		fullBoardMask <<= 1;
-		fullBoardMask += 1;
+		board[i] = new char[M];
 	}
-	endOfBoardMask = 1 << fieldsNumber;
-	if (fieldsNumber == 64) endOfBoardMask = 0;
-	leftBorderMask = rightBorderMask = 0;
-	unsigned long long i = 1;
-	int j = 0;
-	for (unsigned long long i = 1; i != endOfBoardMask; i <<= 1, j++)
+}
+
+NMKEngine::~NMKEngine()
+{
+	for (int i = 0; i < N; i++)
 	{
-		if ((j + 1) % boardSize) leftBorderMask |= i;
-		if (j % boardSize) rightBorderMask |= i;
+		delete[] board[i];
 	}
-	endOfBoardMask--;
+	delete[] board;
 }
 
 
@@ -51,10 +48,7 @@ bool NMKEngine::isGameOver() {
 unsigned int NMKEngine::numberOfPossibleMoves(bool)
 {
 	short res = 0;
-	unsigned long long i = 1;
-	for (int j = 0; j < fieldsNumber; i <<= 1, j++) {
-		if (!((blackPawns & i) | (whitePawns & i))) res++;
-	}
+
 	return res;
 }
 
@@ -64,26 +58,5 @@ void NMKEngine::GeneratePossibleMoves(GameEngine* possibleMoves, bool isBlackPla
 
 	if (isBlackPlayerTurn)
 	{
-		unsigned long long i = 1;
-		for (int j = 0; j < possibleMovesCount; i <<= 1) {
-			if (!((blackPawns & i) | (whitePawns & i)))
-			{
-				possibleMoves[j].blackPawns = blackPawns | i;
-				possibleMoves[j].whitePawns = whitePawns;
-				j++;
-			}
-		}
-	}
-	else
-	{
-		unsigned long long i = 1;
-		for (int j = 0; j < possibleMovesCount; i <<= 1) {
-			if (!((blackPawns & i) | (whitePawns & i)))
-			{
-				possibleMoves[j].blackPawns = blackPawns;
-				possibleMoves[j].whitePawns = whitePawns | i;
-				j++;
-			}
-		}
 	}
 }

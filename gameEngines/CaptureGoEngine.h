@@ -14,8 +14,9 @@ namespace gameEngines
 		unsigned long long blackPawns;
 		unsigned long long whitePawns;
 
-		static unsigned int boardSize;
-		static unsigned int fieldsNumber;
+		static int boardSize;
+		static int fieldsNumber;
+		static int maxPossibleMoves;
 
 		static unsigned long long endOfBoardMask;
 		static unsigned long long leftBorderMask;
