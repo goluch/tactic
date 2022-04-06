@@ -169,7 +169,7 @@ unsigned int CaptureGoEngine::numberOfPossibleMoves(bool)
 	return res;
 }
 
-void CaptureGoEngine::GeneratePossibleMoves(CaptureGoEngine* possibleMoves, bool isBlackPlayerTurn)
+void CaptureGoEngine::GeneratePossibleMoves(GameEngine* possibleMoves, bool isBlackPlayerTurn)
 {	
 	short possibleMovesCount = numberOfPossibleMoves(isBlackPlayerTurn);	
 

@@ -4,17 +4,18 @@
 namespace gameEngines
 {
 
-	class CaptureGoEngine
+	class NMKEngine
 		: public GameEngine
 	{
-		void checkBreath(unsigned long long, unsigned long long *);
 
 	public:
 
 		unsigned long long blackPawns;
 		unsigned long long whitePawns;
 
-		static unsigned int boardSize;
+		static unsigned int N;
+		static unsigned int M;
+		static unsigned int K;
 		static unsigned int fieldsNumber;
 
 		static unsigned long long endOfBoardMask;
@@ -31,11 +32,10 @@ namespace gameEngines
 		virtual unsigned int numberOfPossibleMoves(bool);
 		virtual void GeneratePossibleMoves(GameEngine*, bool);
 
-		CaptureGoEngine();
-		CaptureGoEngine(unsigned long long, unsigned long long);
-		CaptureGoEngine(char *, char *);
+		NMKEngine();
+		NMKEngine(unsigned long long, unsigned long long);
+		NMKEngine(char *, char *);
 
-		unsigned long long pawnsFromStringToLong(char *);
 	};
 
 }

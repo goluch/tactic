@@ -2,6 +2,7 @@
 #include <tchar.h>
 #include <iostream>
 #include "CppUnitTest.h"
+#include "NMKEngine.h"
 
 #define UNIT_TEST
 
