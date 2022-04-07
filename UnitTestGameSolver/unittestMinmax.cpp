@@ -2,29 +2,29 @@
 #include <tchar.h>
 #include <iostream>
 #include "CppUnitTest.h"
-//#include "ProofNumberSearch.h"
-//#include "PNSNode.h"
-//#include "CaptureGoEngine.h"
-#include "exceptions.h"
-//
+#include "Minmax.h"
+//#include "exceptions.h"
+#include "NMKEngine.h"
+using namespace gameEngines;
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-//using namespace gameSolver;
-//using namespace gameDataStructures;
-//using namespace gameEngines;
+using namespace gameSolver;
 
 namespace UnitTestGameSolver
-{		
-	TEST_CLASS(UnitTestProofNumberSearch)
+{
+	TEST_CLASS(UnitTestMinmax)
 	{
 	public:
-		
-		//TEST_METHOD(TestSolveMethod_1_1)
-		//{
-		//	ProofNumberSearch<PNSNode<CaptureGoEngine, unsigned int>> pns;
-		//	CaptureGoEngine::boardSize = 1;
-		//	CaptureGoEngine::initialize();
-		//	Assert::IsTrue(pns.Solve(CaptureGoEngine(), true, true));
-		//}
+
+		TEST_METHOD(TestSolveMethod_1_1)
+		{
+			NMKEngine::N = 2;
+			NMKEngine::M = 2;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			MinMaxAlg<NMKEngine> mmAlg;
+			Assert::IsTrue(mmAlg.Solve(nmkEng));
+		}
 
 		//TEST_METHOD(TestSolveMethod_1_2)
 		//{

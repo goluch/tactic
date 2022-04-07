@@ -30,7 +30,10 @@
     <ClInclude Include="ProofNumberSearchWrapped.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MinMaxAlgorithm.h">
+    <ClInclude Include="Minmax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Negamax.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -47,7 +50,10 @@
     <ClCompile Include="ProofNumberSearchWrapped.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MinMaxAlgorithm.cpp">
+    <ClCompile Include="Minmax.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Negamax.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

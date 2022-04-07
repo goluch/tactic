@@ -7,8 +7,9 @@ namespace gameEngines
 	{
 	public:
 
-		virtual bool isGameOver() = 0;
-		virtual unsigned int numberOfPossibleMoves(bool) = 0;
+		virtual bool IsGameOver() = 0;
+		virtual int Evaluate();
+		virtual int GetNumberOfPossibleMoves(bool) = 0;
 		virtual GameEngine* GeneratePossibleMoves() = 0;
 	};
 

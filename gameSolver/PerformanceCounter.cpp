@@ -15,7 +15,7 @@ PerformanceCounter::~PerformanceCounter()
 {
 }
 
-void PerformanceCounter::setMaxProofAndDisproof(unsigned long long newProof, unsigned long long newDisproof)
+void PerformanceCounter::SetMaxProofAndDisproof(unsigned long long newProof, unsigned long long newDisproof)
 {
 	if (this->maxProofNumberInRoot < newProof)
 	{
@@ -27,18 +27,18 @@ void PerformanceCounter::setMaxProofAndDisproof(unsigned long long newProof, uns
 	}
 }
 
-void PerformanceCounter::increaseAllExpandedNodes(unsigned long long newNodesCount)
+void PerformanceCounter::IncreaseAllExpandedNodes(unsigned long long newNodesCount)
 {
 	this->allExpandedNodes += newNodesCount;
 	this->maxExpandedNodesInMemory += newNodesCount;
 }
 
-void PerformanceCounter::decreaseMaxExpandedNodesInMemory(unsigned long long newNodesCount)
+void PerformanceCounter::DecreaseMaxExpandedNodesInMemory(unsigned long long newNodesCount)
 {
 	this->maxExpandedNodesInMemory -= newNodesCount;
 }
 
-void PerformanceCounter::increaseAllUsedMemory(unsigned long long newMemoryUsageCount)
+void PerformanceCounter::IncreaseAllUsedMemory(unsigned long long newMemoryUsageCount)
 {
 	this->maxMemoryUsageCount += newMemoryUsageCount;
 }

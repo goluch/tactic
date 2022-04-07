@@ -7,11 +7,13 @@ int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
 
-
 NMKEngine::NMKEngine()
 {
+
+
+
 	emptyFieldsCount = N * M;
-	activePlayer = 0;
+	activePlayer = Player::first;
 	board = new char*[N];
 	for (int i = 0; i < N; i++)
 	{
@@ -33,14 +35,17 @@ NMKEngine::~NMKEngine()
 }
 
 
-bool NMKEngine::isGameOver() {
+bool NMKEngine::IsGameOver() {
 	return gameOver;
 }
 
+int NMKEngine::Evaluate() {
+	return 1;
+}
 
-unsigned int NMKEngine::numberOfPossibleMoves(bool)
+int NMKEngine::GetNumberOfPossibleMoves(bool)
 {
-	short res = 0;
+	int res = 0;
 
 	return res;
 }
@@ -72,6 +77,6 @@ GameEngine* NMKEngine::GeneratePossibleMoves()
 			}
 		}
 	}
-	activePlayer++ % 2;
+	++activePlayer;
 	return possibleMoves;
 }

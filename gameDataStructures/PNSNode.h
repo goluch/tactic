@@ -8,10 +8,10 @@ namespace gameDataStructures
 	struct PNSNode 
 	{
 		PNSNode();
-		PNSNode(E, PNSNode * = nullptr);
+		//PNSNode(E, PNSNode * = nullptr);
 		~PNSNode();
 
-		E gameEngine;
+		//E gameEngine;
 		T proof;
 		T disproof;
 

@@ -3,7 +3,7 @@
 
 namespace gameSolver
 {
-	template<typename G>
+	template<typename GameEngine>
 	class MinMaxAlg
 	{
 
@@ -13,11 +13,11 @@ namespace gameSolver
 
 		MinMaxAlg();
 		~MinMaxAlg();
-		bool Solve(G, PerformanceCounter* = nullptr);
+		bool Solve(GameEngine, PerformanceCounter* = nullptr);
 
 	protected:
-		void startExecutionTimeMeasurement();
-		void stopExecutionTimeMeasurement();
+		void StartExecutionTimeMeasurement();
+		void StopExecutionTimeMeasurement();
 	};
 
 }

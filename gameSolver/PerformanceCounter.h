@@ -11,9 +11,9 @@ public:
 	unsigned long long maxDisProofNumberInRoot;
 	unsigned long long maxMemoryUsageCount;
 
-	void setMaxProofAndDisproof(unsigned long long, unsigned long long);
-	void increaseAllExpandedNodes(unsigned long long);
-	void decreaseMaxExpandedNodesInMemory(unsigned long long);
-	void increaseAllUsedMemory(unsigned long long);
+	void SetMaxProofAndDisproof(unsigned long long, unsigned long long);
+	void IncreaseAllExpandedNodes(unsigned long long);
+	void DecreaseMaxExpandedNodesInMemory(unsigned long long);
+	void IncreaseAllUsedMemory(unsigned long long);
 };
 

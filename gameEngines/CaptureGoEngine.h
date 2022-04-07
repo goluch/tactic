@@ -24,19 +24,18 @@ namespace gameEngines
 		static unsigned long long fullBoardMask;
 		static unsigned long long possiblyDeadBlackPawns, possiblyDeadWhitePawns;
 
-		static void initialize();
-
-		virtual bool isGameOver();
-		virtual void checkIsItAWinner(bool, bool*);
-		virtual void checkIsFirstPlayerWinner(bool*);
-		virtual unsigned int numberOfPossibleMoves(bool);
+		virtual bool IsGameOver();
+		virtual int Evaluate();
+		virtual void CheckIsItAWinner(bool, bool*);
+		virtual void CheckIsFirstPlayerWinner(bool*);
+		virtual int GetNumberOfPossibleMoves(bool);
 		virtual void GeneratePossibleMoves(GameEngine*, bool);
 
 		CaptureGoEngine();
 		CaptureGoEngine(unsigned long long, unsigned long long);
 		CaptureGoEngine(char *, char *);
 
-		unsigned long long pawnsFromStringToLong(char *);
+		unsigned long long GetPawnsFromStringToLong(char *);
 	};
 
 }

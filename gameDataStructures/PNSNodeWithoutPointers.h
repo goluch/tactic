@@ -10,10 +10,10 @@ namespace gameDataStructures
 		class Indexer { };
 
 		PNSNodeWithoutPointers();
-		PNSNodeWithoutPointers(E, I = NULL);
+		//PNSNodeWithoutPointers(E, I = NULL);
 		~PNSNodeWithoutPointers();
 
-		E gameEngine;
+		//E gameEngine;
 		T proof;
 		T disproof;
 

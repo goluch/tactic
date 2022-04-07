@@ -76,6 +76,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
       <PrecompiledHeaderOutputFile />
+      <AdditionalIncludeDirectories>../gameEngines/;../gameDataStructures/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -141,14 +142,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="exceptions.h" />
-    <ClInclude Include="MinMaxAlgorithm.h" />
+    <ClInclude Include="Minmax.h" />
+    <ClInclude Include="Negamax.h" />
     <ClInclude Include="PerformanceCounter.h" />
     <ClInclude Include="ProofNumberSearch.h" />
     <ClInclude Include="ProofNumberSearchWrapped.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="exceptions.cpp" />
-    <ClCompile Include="MinMaxAlgorithm.cpp" />
+    <ClCompile Include="Minmax.cpp" />
+    <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="PerformanceCounter.cpp" />
     <ClCompile Include="ProofNumberSearch.cpp" />
     <ClCompile Include="ProofNumberSearchWrapped.cpp" />
