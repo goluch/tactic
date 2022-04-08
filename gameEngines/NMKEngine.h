@@ -3,16 +3,21 @@
 
 namespace gameEngines
 {
-	enum Player { undefined, first, second };
-
-	Player operator++(Player& m) {
-		return Player(m + 1 % 2);
-	}
 
 	class NMKEngine
 		: public GameEngine
 	{
 	public:
+
+		enum Player { undefined, first, second } activePlayer;
+		
+		Player operator++(int)
+		{
+			if (this->activePlayer == Player::first) return Player::second;
+			if (this->activePlayer == Player::second) return Player::first;
+			return Player::undefined;
+		}
+
 
 		static int N;
 		static int M;
@@ -20,7 +25,6 @@ namespace gameEngines
 
 		char** board;
 		int emptyFieldsCount;
-		Player activePlayer;
 
 		bool gameOver = false;
 
@@ -37,7 +41,6 @@ namespace gameEngines
 		virtual int Evaluate();
 		virtual int GetNumberOfPossibleMoves(bool);
 		virtual GameEngine* GeneratePossibleMoves();
-
 	};
 
 }

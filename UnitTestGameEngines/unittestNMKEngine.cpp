@@ -11,9 +11,32 @@ using namespace gameEngines;
 
 namespace UnitTestGameEngines
 {
+
+
 	TEST_CLASS(UnitTestGameEngines)
 	{
 	public:
+
+		TEST_METHOD(TestNewPlayerShouldBeFirst)
+		{
+			NMKEngine::Player player = NMKEngine::Player::first;
+			Assert::AreEqual((int)player, (int)NMKEngine::Player::first);
+		}
+
+		TEST_METHOD(TestIncrementPlayerShouldBeSecond)
+		{
+			NMKEngine::Player player = NMKEngine::Player::first;
+			//player;
+			Assert::AreEqual((int)player, (int)NMKEngine::Player::second);
+		}
+
+		TEST_METHOD(TestIncrementTwicePlayerShouldBeFirst)
+		{
+			NMKEngine::Player player = NMKEngine::Player::first;
+			//player++;
+			//player++;
+			Assert::AreEqual((int)player, (int)NMKEngine::Player::second);
+		}
 
 		TEST_METHOD(TestNewBoard)
 		{
@@ -30,7 +53,7 @@ namespace UnitTestGameEngines
 			NMKEngine::N = 3;
 			NMKEngine::M = 3;
 			NMKEngine* eng = new NMKEngine();
-			Assert::AreEqual(eng->activePlayer, 0);
+			Assert::AreEqual((int)eng->activePlayer, (int)NMKEngine::Player::first);
 			delete eng;
 		}
 
@@ -40,7 +63,7 @@ namespace UnitTestGameEngines
 			NMKEngine::M = 3;
 			NMKEngine* eng = new NMKEngine();
 			eng->GeneratePossibleMoves();
-			Assert::AreEqual(eng->activePlayer, 1);
+			Assert::AreEqual((int)eng->activePlayer, (int)NMKEngine::Player::second);
 			delete eng;
 		}
 
@@ -73,7 +96,7 @@ namespace UnitTestGameEngines
 			NMKEngine::N = 3;
 			NMKEngine::M = 3;
 			NMKEngine* eng = new NMKEngine();
-			bool res = eng->isGameOver();
+			bool res = eng->IsGameOver();
 			Assert::IsFalse(res);
 			delete eng;
 		}

@@ -9,9 +9,6 @@ int NMKEngine::K;
 
 NMKEngine::NMKEngine()
 {
-
-
-
 	emptyFieldsCount = N * M;
 	activePlayer = Player::first;
 	board = new char*[N];
@@ -33,7 +30,6 @@ NMKEngine::~NMKEngine()
 	}
 	delete[] board;
 }
-
 
 bool NMKEngine::IsGameOver() {
 	return gameOver;
@@ -77,6 +73,7 @@ GameEngine* NMKEngine::GeneratePossibleMoves()
 			}
 		}
 	}
-	++activePlayer;
+	//activePlayer++;
+	//activePlayer++;
 	return possibleMoves;
 }
