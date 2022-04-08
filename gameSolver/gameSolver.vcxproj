@@ -143,15 +143,15 @@
   <ItemGroup>
     <ClInclude Include="exceptions.h" />
     <ClInclude Include="Minmax.h" />
+    <ClInclude Include="utils.h" />
     <ClInclude Include="Negamax.h" />
     <ClInclude Include="PerformanceCounter.h" />
     <ClInclude Include="ProofNumberSearch.h" />
     <ClInclude Include="ProofNumberSearchWrapped.h" />
+    <ClInclude Include="Solver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="exceptions.cpp" />
-    <ClCompile Include="Minmax.cpp" />
-    <ClCompile Include="Negamax.cpp" />
     <ClCompile Include="PerformanceCounter.cpp" />
     <ClCompile Include="ProofNumberSearch.cpp" />
     <ClCompile Include="ProofNumberSearchWrapped.cpp" />

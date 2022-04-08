@@ -39,7 +39,7 @@ namespace gameEngines
 
 		virtual bool IsGameOver();
 		virtual int Evaluate();
-		virtual int GetNumberOfPossibleMoves(bool);
+		virtual int GetNumberOfPossibleMoves();
 		virtual GameEngine* GeneratePossibleMoves();
 	};
 

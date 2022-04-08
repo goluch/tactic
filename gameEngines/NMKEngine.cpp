@@ -39,7 +39,7 @@ int NMKEngine::Evaluate() {
 	return 1;
 }
 
-int NMKEngine::GetNumberOfPossibleMoves(bool)
+int NMKEngine::GetNumberOfPossibleMoves()
 {
 	int res = 0;
 

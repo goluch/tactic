@@ -22,7 +22,7 @@ namespace UnitTestGameSolver
 			NMKEngine::M = 2;
 			NMKEngine::K = 2;
 			NMKEngine nmkEng;
-			MinMaxAlg<NMKEngine> mmAlg;
+			MinmaxAlg<NMKEngine> mmAlg;
 			Assert::IsTrue(mmAlg.Solve(nmkEng));
 		}
 
