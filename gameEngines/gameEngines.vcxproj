@@ -142,10 +142,12 @@
     <ClInclude Include="CaptureGoEngine.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="NMKEngine.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureGoEngine.cpp" />
     <ClCompile Include="NMKEngine.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

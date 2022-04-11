@@ -9,16 +9,6 @@ namespace gameEngines
 	{
 	public:
 
-		enum Player { undefined, first, second } activePlayer;
-		
-		Player operator++(int)
-		{
-			if (this->activePlayer == Player::first) return Player::second;
-			if (this->activePlayer == Player::second) return Player::first;
-			return Player::undefined;
-		}
-
-
 		static int N;
 		static int M;
 		static int K;

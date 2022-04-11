@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <vector>
+#include "Player.h"
 #include "NMKEngine.h"
 
 using namespace std;
@@ -12,7 +13,7 @@ int NMKEngine::K;
 NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
-	activePlayer = Player::first;
+	Player activePlayer = Player::first;
 	vector<vector<int>> board;
 
 	for (int i = 0; i < emptyFieldsCount; i++)
