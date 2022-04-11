@@ -13,9 +13,6 @@ namespace gameEngines
 		static int M;
 		static int K;
 
-		char** board;
-		int emptyFieldsCount;
-
 		bool gameOver = false;
 
 		static unsigned long long endOfBoardMask;

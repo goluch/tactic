@@ -13,25 +13,13 @@ int NMKEngine::K;
 NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
-	Player activePlayer = Player::first;
-	vector<vector<int>> board;
-
-	for (int i = 0; i < emptyFieldsCount; i++)
-	{
-		for (int j = 0; j < M; j++)
-		{
-			board[i][j] = (char)0;
-		}
-	}
+	activePlayer = Player::first;
+	this->board.resize(N, vector<char>(M, 0));
 }
 
 NMKEngine::~NMKEngine()
 {
-	for (int i = 0; i < N; i++)
-	{
-		delete[] board[i];
-	}
-	delete[] board;
+	board.clear();
 }
 
 bool NMKEngine::IsGameOver() {

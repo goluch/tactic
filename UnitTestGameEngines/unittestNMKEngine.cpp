@@ -48,15 +48,33 @@ namespace UnitTestGameEngines
 			Assert::AreEqual((int)player, (int)Player::second);
 		};
 
-		//TEST_METHOD(TestNewBoard)
-		//{
-		//	NMKEngine::N = 3;
-		//	NMKEngine::M = 3;
-		//	NMKEngine* eng = new NMKEngine();
-		//	eng->board[2][2] = 1;
-		//	Assert::AreEqual(eng->board[2][2], (char)1);
-		//	delete eng;
-		//};
+		TEST_METHOD(TestNewBoardShouldBeeFilledByZeros)
+		{
+			NMKEngine::N = 2;
+			NMKEngine::M = 2;
+			NMKEngine* eng = new NMKEngine();
+			Assert::AreEqual(eng->board[0][0], (char)0);
+			Assert::AreEqual(eng->board[0][1], (char)0);
+			Assert::AreEqual(eng->board[1][0], (char)0);
+			Assert::AreEqual(eng->board[1][1], (char)0);
+			delete eng;
+		};
+
+		TEST_METHOD(TestNewBoardFilledBySomeValuesShouldReturnTheSame)
+		{
+			NMKEngine::N = 2;
+			NMKEngine::M = 2;
+			NMKEngine* eng = new NMKEngine();
+			eng->board[0][0] = 1;
+			eng->board[0][1] = 2;
+			eng->board[1][0] = 3;
+			eng->board[1][1] = 4;
+			Assert::AreEqual(eng->board[0][0], (char)1);
+			Assert::AreEqual(eng->board[0][1], (char)2);
+			Assert::AreEqual(eng->board[1][0], (char)3);
+			Assert::AreEqual(eng->board[1][1], (char)4);
+			delete eng;
+		};
 
 		//TEST_METHOD(TestNewBoardActivePlayerShouldBe0)
 		//{
