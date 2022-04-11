@@ -1,4 +1,8 @@
 #pragma once
+#include <assert.h>
+#include <vector>
+#include <sstream>
+#include "Player.h"
 #include "GameEngine.h"
 
 namespace gameEngines
@@ -13,21 +17,22 @@ namespace gameEngines
 		static int M;
 		static int K;
 
-		bool gameOver = false;
-
-		static unsigned long long endOfBoardMask;
-		static unsigned long long leftBorderMask;
-		static unsigned long long rightBorderMask;
-		static unsigned long long fullBoardMask;
-		static unsigned long long possiblyDeadBlackPawns, possiblyDeadWhitePawns;
-
 		NMKEngine();
 		~NMKEngine();
 
 		virtual bool IsGameOver();
-		virtual int Evaluate();
-		virtual int GetNumberOfPossibleMoves();
-		virtual GameEngine* GeneratePossibleMoves();
+		virtual int Evaluate(Player);
+		virtual int GetNumberOfPossibleMoves(Player);
+		virtual GameEngine* GeneratePossibleMoves(Player);
+		virtual std::string PrintGameState();
+
+	private:
+
+		int emptyFieldsCount;
+		bool gameOver = false;
+		Player activePlayer;
+		std::vector<std::vector<char>> board;
+
 	};
 
 }
