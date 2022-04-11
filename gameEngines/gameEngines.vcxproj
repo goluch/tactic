@@ -139,6 +139,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Board.h" />
     <ClInclude Include="CaptureGoEngine.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="NMKEngine.h" />

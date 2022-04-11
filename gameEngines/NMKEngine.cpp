@@ -1,5 +1,6 @@
-#include "NMKEngine.h"
 #include <assert.h>
+#include "NMKEngine.h"
+#include "Board.h"
 
 using namespace gameEngines;
 
@@ -11,13 +12,13 @@ NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
 	activePlayer = Player::first;
-	board = new char*[N];
-	for (int i = 0; i < N; i++)
+	std::array<std::array<int, N>, M> arr;
+
+	for (int i = 0; i < emptyFieldsCount; i++)
 	{
-		board[i] = new char[M];
 		for (int j = 0; j < M; j++)
 		{
-			board[i][j] = 0;
+			board[i][j] = (char)0;
 		}
 	}
 }
