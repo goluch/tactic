@@ -64,7 +64,6 @@ GameEngine* NMKEngine::GeneratePossibleMoves()
 			}
 		}
 	}
-	//activePlayer++;
-	//activePlayer++;
+	activePlayer++;
 	return possibleMoves;
 }
