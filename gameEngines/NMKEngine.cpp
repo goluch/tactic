@@ -1,7 +1,8 @@
 #include <assert.h>
+#include <vector>
 #include "NMKEngine.h"
-#include "Board.h"
 
+using namespace std;
 using namespace gameEngines;
 
 int NMKEngine::N;
@@ -12,7 +13,7 @@ NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
 	activePlayer = Player::first;
-	std::array<std::array<int, N>, M> arr;
+	vector<vector<int>> board;
 
 	for (int i = 0; i < emptyFieldsCount; i++)
 	{
