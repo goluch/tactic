@@ -24,13 +24,14 @@ namespace gameEngines
 		virtual int Evaluate(Player);
 		virtual int GetNumberOfPossibleMoves(Player);
 		virtual GameEngine* GeneratePossibleMoves(Player);
+		bool Check_K_InRow(NMKEngine*, int, int, Player);
 		virtual std::string PrintGameState();
 
 	private:
 
 		int emptyFieldsCount;
 		bool gameOver = false;
-		Player activePlayer;
+		Player winner;
 		std::vector<std::vector<char>> board;
 
 	};
