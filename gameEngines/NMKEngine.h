@@ -15,6 +15,7 @@ namespace gameEngines
 		static int N;
 		static int M;
 		static int K;
+		static bool ShowLeafes;
 
 		NMKEngine();
 		~NMKEngine();

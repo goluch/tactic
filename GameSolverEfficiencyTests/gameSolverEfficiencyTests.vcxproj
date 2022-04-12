@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderFile />
       <PrecompiledHeaderOutputFile />
+      <AdditionalIncludeDirectories>../gameSolve/r;../gameDataStructures/;../gameEngines/</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -155,6 +156,9 @@
     <ClCompile Include="GameSolverEfficiencyTests.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\gameEngines\gameEngines.vcxproj">
+      <Project>{bf6712e8-980e-4c4b-988c-d3a1432fed25}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\gameSolver\gameSolver.vcxproj">
       <Project>{d4ca8505-0477-4aa2-89c1-7e2f9b3656e7}</Project>
     </ProjectReference>

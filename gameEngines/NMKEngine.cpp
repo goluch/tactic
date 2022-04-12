@@ -1,4 +1,5 @@
 #include "NMKEngine.h"
+#include <iostream>
 
 using namespace std;
 using namespace gameEngines;
@@ -6,6 +7,7 @@ using namespace gameEngines;
 int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
+bool NMKEngine::ShowLeafes = false;
 
 NMKEngine::NMKEngine()
 {
@@ -26,6 +28,10 @@ int NMKEngine::Evaluate(Player activePlayer) {
 	// max node
 	if (this->gameOver)
 	{
+		if (NMKEngine::ShowLeafes)
+		{
+			std::cout << PrintGameState();
+		}
 		switch (this->winner)
 		{
 		case Player::first:
