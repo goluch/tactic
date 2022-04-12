@@ -39,20 +39,25 @@ int NMKEngine::Evaluate(Player activePlayer) {
 	}
 	else if (activePlayer == Player::first)
 	{
-		return INT32_MIN;
+		return INT_MIN;
 	}
 	// min node
 	else
 	{
-		return INT32_MAX;
+		return INT_MAX;
 	}
 }
 
 int NMKEngine::GetNumberOfPossibleMoves(Player activePlayer)
 {
-	int res = 0;
-
-	return res;
+	if (this->gameOver)
+	{
+		return 0;
+	}
+	else
+	{
+	return this->emptyFieldsCount;
+	}
 }
 
 GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
@@ -60,7 +65,6 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 	NMKEngine* possibleMoves = new NMKEngine[this->emptyFieldsCount];
 	if (!this->gameOver)
 	{
-		int actualPossibleMoveIndex = 0;
 		// for all possible moves
 		for (int k = 0; k < this->emptyFieldsCount; k++)
 		{
@@ -73,6 +77,7 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 				}
 			}
 		}
+		int actualPossibleMoveIndex = 0;
 		for (int i = 0; i < N; i++)
 		{
 			for (int j = 0; j < M; j++)
@@ -87,6 +92,7 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 					// check if someone won after the move
 					if (Check_K_InRow(&possibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
 					{
+						actualPossibleMoveIndex++;
 						continue;
 					}
 					// check if bo&ad is full game is over and nobody win
@@ -107,7 +113,7 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player activePlayer)
 {
 	int nextInRow;
-	for (nextInRow = 0; nextInRow < K; nextInRow++)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (i - nextInRow < 0 ||
 			possibleMoves->board[i - nextInRow][j] != (int)activePlayer)
@@ -121,7 +127,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		possibleMoves->winner = activePlayer;
 		return true;
 	}
-	for (nextInRow = 0; nextInRow < K; nextInRow++)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (i + nextInRow >= N ||
 			possibleMoves->board[i + nextInRow][j] != (int)activePlayer)
@@ -135,7 +141,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		possibleMoves->winner = activePlayer;
 		return true;
 	}
-	for (nextInRow = 0; nextInRow < K; nextInRow++)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (j - nextInRow < 0 ||
 			possibleMoves->board[i][j - nextInRow] != (int)activePlayer)
@@ -149,7 +155,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		possibleMoves->winner = activePlayer;
 		return true;
 	}
-	for (nextInRow = 0; nextInRow < K; nextInRow++)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (j + nextInRow >= M ||
 			possibleMoves->board[i][j + nextInRow] != (int)activePlayer)

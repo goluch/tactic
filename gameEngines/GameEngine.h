@@ -1,5 +1,6 @@
 #pragma once
 #include "Player.h"
+#include <sstream>
 
 namespace gameEngines
 {
