@@ -16,4 +16,3 @@ public:
 	void DecreaseMaxExpandedNodesInMemory(unsigned long long);
 	void IncreaseAllUsedMemory(unsigned long long);
 };
-

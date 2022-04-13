@@ -1,9 +1,12 @@
+#ifndef MINMAXALG
+#define MINMAXALG
+
 #pragma once
 #include <time.h>
 #include "GameEngine.h"
 #include "PerformanceCounter.h"
 #include "limits.h"
-#include "utils.h"
+//#include "utils.h"
 
 namespace gameSolver
 {
@@ -57,7 +60,7 @@ namespace gameSolver
                 int best = INT_MIN;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], activePlayer++));
+                    best = max(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                 }
                 return best;
             }
@@ -66,7 +69,7 @@ namespace gameSolver
                 int best = INT_MAX;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = min(best, Minmax(allPossibleMoves[i], activePlayer++));
+                    best = min(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                 }
                 return best;
             }
@@ -74,3 +77,5 @@ namespace gameSolver
     };
 
 }
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef GAMEENGINE
+#define GAMEENGINE
+
 #pragma once
 #include "Player.h"
 #include <sstream>
@@ -18,3 +21,4 @@ namespace gameEngines
 
 }
 
+#endif

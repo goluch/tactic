@@ -2,16 +2,14 @@
 // GameSolverEfficiencyTests.cpp : Defines the entry point for the console application.
 //
 
+#include <stdio.h>
 #include <tchar.h>
 #include <iostream>
-//#include "ProofNumberSearch.h"
-//#include "ProofNumberSearchWrapped.h"
-//#include "PNSNode.h"
-//#include "PNSNodeWithoutPointers.h"
-//#include "CaptureGoEngine.h"
+#include "Minmax.h"
 //#include "exceptions.h"
 #include "NMKEngine.h"
-#include "Minmax.h"
+using namespace gameEngines;
+//using namespace gameSolver;
 
 //#define NODE PNSNode<CaptureGoEngine, unsigned int>
 //#define NODE_WITHOUT_POINTERS PNSNodeWithoutPointers<CaptureGoEngine, unsigned int, unsigned int>
@@ -38,21 +36,29 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//try
 	//{
-		NMKEngine::N = 2;
-		NMKEngine::M = 2;
-		NMKEngine::K = 2;
+		NMKEngine::N = 3;
+		NMKEngine::M = 3;
+		NMKEngine::K = 3;
 		NMKEngine::ShowLeafes = true;
 		NMKEngine nmkEng;
-		cout << nmkEng.PrintGameState();
-		int possibleMovesCount = nmkEng.GetNumberOfPossibleMoves(Player::first);
-		NMKEngine* newGames = (NMKEngine*)nmkEng.GeneratePossibleMoves(Player::first);
-		for (int i = 0; i < possibleMovesCount; i++)
-		{
-			cout << endl;
-			cout << newGames[i].PrintGameState();
-		}
-		//MinmaxAlg<NMKEngine> mmAlg;
-		//mmAlg.Solve(nmkEng);
+		//for (int i = 0; i < possibleMovesCount; i++)
+		//{
+		//	cout << endl;
+		//	cout << newGames[i].PrintGameState() << endl;
+		//}
+		//nmkEng.SetGameState();
+		nmkEng.board[1][1] = 2;
+		nmkEng.board[1][2] = 1;
+		nmkEng.board[1][3] = 2;
+		nmkEng.board[2][1] = 1;
+		nmkEng.board[2][2] = 2;
+		nmkEng.board[2][3] = 1;
+		nmkEng.board[3][1] = 0;
+		nmkEng.board[3][2] = 0;
+		nmkEng.board[3][3] = 0;
+		nmkEng.emptyFieldsCount = 3;
+		gameSolver:: MinmaxAlg<NMKEngine> mmAlg;
+		int result = mmAlg.Solve(nmkEng);
 
 		//bool result;
 

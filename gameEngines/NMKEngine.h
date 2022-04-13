@@ -15,7 +15,13 @@ namespace gameEngines
 		static int N;
 		static int M;
 		static int K;
+		static int sizeN;
+		static int sizeM;
+		static int border;
 		static bool ShowLeafes;
+
+		int emptyFieldsCount;
+		std::vector<std::vector<char>> board;
 
 		NMKEngine();
 		~NMKEngine();
@@ -29,10 +35,8 @@ namespace gameEngines
 
 	private:
 
-		int emptyFieldsCount;
 		bool gameOver = false;
 		Player winner;
-		std::vector<std::vector<char>> board;
 
 	};
 

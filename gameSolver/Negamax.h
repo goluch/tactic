@@ -1,3 +1,6 @@
+#ifndef NEGMAXALG
+#define NEGMAXALG
+
 #pragma once
 #include <time.h>
 #include "GameEngine.h"
@@ -97,3 +100,5 @@ namespace gameSolver
 	};
 
 }
+
+#endif

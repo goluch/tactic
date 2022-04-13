@@ -7,12 +7,30 @@ using namespace gameEngines;
 int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
+int NMKEngine::sizeN;
+int NMKEngine::sizeM;
 bool NMKEngine::ShowLeafes = false;
+
+int NMKEngine::border = 1;
 
 NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
-	this->board.resize(N, vector<char>(M, 0));
+	// the board has borders with a thickness of 1
+	this->board.resize(N + border * 2, vector<char>(M + border * 2, 0));
+	sizeN = this->board.size() - 1;
+	sizeM = this->board[0].size() - 1;
+	//int sizeN = board.size();
+	//int sizeM = board[0].size();
+	// filling boundaries -1 values - so far unnecessary
+	/*for (int i = 0; i < sizeM; i++) {
+		board[0][i] = - 1;
+		board[sizeN - 1][i] = -1;
+	}
+	for (int i = 0; i < sizeN; i++) {
+		board[i][0] = -1;
+		board[i][sizeM - 1] = -1;
+	}*/
 }
 
 NMKEngine::~NMKEngine()
@@ -30,16 +48,14 @@ int NMKEngine::Evaluate(Player activePlayer) {
 	{
 		if (NMKEngine::ShowLeafes)
 		{
-			std::cout << PrintGameState();
+			std::cout << PrintGameState() << endl;
 		}
-		switch (this->winner)
-		{
-		case Player::first:
-			return 1;
-		case Player::undefined:
+		if (this->winner == Player::undefined)
 			return 0;
-		case Player::second:
-		default:
+		if (this->winner == activePlayer)
+			return 1;
+		else
+		{
 			return -1;
 		}
 	}
@@ -62,7 +78,7 @@ int NMKEngine::GetNumberOfPossibleMoves(Player activePlayer)
 	}
 	else
 	{
-	return this->emptyFieldsCount;
+		return this->emptyFieldsCount;
 	}
 }
 
@@ -75,37 +91,44 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 		for (int k = 0; k < this->emptyFieldsCount; k++)
 		{
 			// copy whole board
-			for (int i = 0; i < N; i++)
+			for (int i = 1; i < sizeN; i++)
 			{
-				for (int j = 0; j < M; j++)
+				for (int j = 1; j < sizeM; j++)
 				{
 					possibleMoves[k].board[i][j] = this->board[i][j];
 				}
 			}
 		}
 		int actualPossibleMoveIndex = 0;
-		for (int i = 0; i < N; i++)
+		for (int i = 1; i < sizeN; i++)
 		{
-			for (int j = 0; j < M; j++)
+			for (int j = 1; j < sizeM; j++)
 			{
 				// for all possible moves (empty fields)
-				if (board[i][j] == 0)
+				if (this->board[i][j] == 0)
 				{
 					// put active player pawn
 					possibleMoves[actualPossibleMoveIndex].board[i][j] = (int)activePlayer;
 					// update empty fields count
 					possibleMoves[actualPossibleMoveIndex].emptyFieldsCount = this->emptyFieldsCount - 1;
+
+					cout << possibleMoves[actualPossibleMoveIndex].PrintGameState() << endl;
 					// check if someone won after the move
 					if (Check_K_InRow(&possibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
 					{
+						possibleMoves[actualPossibleMoveIndex].emptyFieldsCount = 0;
+						possibleMoves[actualPossibleMoveIndex].gameOver = true;
+						possibleMoves[actualPossibleMoveIndex].winner = activePlayer;
 						actualPossibleMoveIndex++;
 						continue;
 					}
 					// check if bo&ad is full game is over and nobody win
-					if (!possibleMoves[actualPossibleMoveIndex].emptyFieldsCount)
+					if (possibleMoves[actualPossibleMoveIndex].emptyFieldsCount == 0)
 					{
 						possibleMoves[actualPossibleMoveIndex].gameOver = true;
 						possibleMoves[actualPossibleMoveIndex].winner = Player::undefined;
+						actualPossibleMoveIndex++;
+						continue;
 					}
 					actualPossibleMoveIndex++;
 				}
@@ -119,60 +142,85 @@ GameEngine* NMKEngine::GeneratePossibleMoves(Player activePlayer)
 bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player activePlayer)
 {
 	int nextInRow;
-	for (nextInRow = 1; nextInRow < K; nextInRow++)
+	int foundInRow;
+	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		if (i - nextInRow < 0 ||
-			possibleMoves->board[i - nextInRow][j] != (int)activePlayer)
+		if (possibleMoves->board[i - nextInRow][j] != (int)activePlayer)
 		{
 			break;
 		}
+		foundInRow++;
 	}
-	if (nextInRow == K)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		possibleMoves->gameOver = true;
-		possibleMoves->winner = activePlayer;
+		if (possibleMoves->board[i + nextInRow][j] != (int)activePlayer)
+		{
+			break;
+		}
+		foundInRow++;
+	}
+	if (foundInRow == K)
+	{
 		return true;
 	}
-	for (nextInRow = 1; nextInRow < K; nextInRow++)
+	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		if (i + nextInRow >= N ||
-			possibleMoves->board[i + nextInRow][j] != (int)activePlayer)
+		if (possibleMoves->board[i][j - nextInRow] != (int)activePlayer)
 		{
 			break;
 		}
+		foundInRow++;
 	}
-	if (nextInRow == K)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		possibleMoves->gameOver = true;
-		possibleMoves->winner = activePlayer;
+		if (possibleMoves->board[i][j + nextInRow] != (int)activePlayer)
+		{
+			break;
+		}
+		foundInRow++;
+	}
+	if (foundInRow == K)
+	{
 		return true;
 	}
-	for (nextInRow = 1; nextInRow < K; nextInRow++)
+	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		if (j - nextInRow < 0 ||
-			possibleMoves->board[i][j - nextInRow] != (int)activePlayer)
+		if (possibleMoves->board[i - nextInRow][j - nextInRow] != (int)activePlayer)
 		{
 			break;
 		}
+		foundInRow++;
 	}
-	if (nextInRow == K)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		possibleMoves->gameOver = true;
-		possibleMoves->winner = activePlayer;
+		if (possibleMoves->board[i + nextInRow][j + nextInRow] != (int)activePlayer)
+		{
+			break;
+		}
+		foundInRow++;
+	}
+	if (foundInRow == K)
+	{
 		return true;
 	}
-	for (nextInRow = 1; nextInRow < K; nextInRow++)
+	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		if (j + nextInRow >= M ||
-			possibleMoves->board[i][j + nextInRow] != (int)activePlayer)
+		if (possibleMoves->board[i + nextInRow][j - nextInRow] != (int)activePlayer)
 		{
 			break;
 		}
+		foundInRow++;
 	}
-	if (nextInRow == K)
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		possibleMoves->gameOver = true;
-		possibleMoves->winner = activePlayer;
+		if (possibleMoves->board[i - nextInRow][j + nextInRow] != (int)activePlayer)
+		{
+			break;
+		}
+		foundInRow++;
+	}
+	if (foundInRow == K)
+	{
 		return true;
 	}
 	return false;
@@ -181,11 +229,11 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 std::string NMKEngine::PrintGameState()
 {
 	stringstream ss;
-	for (int i = 0; i < N; i++)
+	for (int i = 1; i < board.size() - 1; i++)
 	{
-		for (int j = 0; j < M; j++)
+		for (int j = 1; j < board[0].size() - 1; j++)
 		{
-			ss << (j == 0 ? "" : " ") << (int)board[i][j];
+			ss << (j == 1 ? "" : " ") << (int)board[i][j];
 		}
 		ss << endl;
 	}
