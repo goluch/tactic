@@ -201,10 +201,6 @@ namespace UnitTestGameEngines
 			delete eng;
 		};
 
-
-
-
-
 		TEST_METHOD(TestIsGameOverMethodOfSomeEngineAfterFourthMoveShouldReturnTrue)
 		{
 			NMKEngine::N = 2;
@@ -215,6 +211,18 @@ namespace UnitTestGameEngines
 			res = (NMKEngine*)res[1].GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[0].GeneratePossibleMoves(Player::second);
 			Assert::IsTrue((NMKEngine*)res[0].IsGameOver());
+			delete eng;
+		};
+
+		TEST_METHOD(Test_MethodOfSomeEngineAfterFourthMoveShouldReturnTrue)
+		{
+			NMKEngine::N = 2;
+			NMKEngine::M = 2;
+			NMKEngine* eng = new NMKEngine();
+			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
+			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
+			res = (NMKEngine*)res[1].GeneratePossibleMoves(Player::first);
+			Assert::AreEqual(1, res[0].Evaluate(Player::second));
 			delete eng;
 		};
 	};
