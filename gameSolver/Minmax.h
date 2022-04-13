@@ -32,7 +32,8 @@ namespace gameSolver
                 //liczymy performance
             }
 #endif
-            return Minmax(gameState, true) == 1 ? true : false;
+            int res = Minmax(gameState, Player::first) == 1 ? true : false;
+            return res;
         };
 
     protected:
@@ -41,22 +42,22 @@ namespace gameSolver
 
     private:
 
-        int Minmax(G gameState, bool isMax)
+        int Minmax(G gameState, Player activePlayer)
         {
-            int score = gameState.Evaluate();
+            int score = gameState.Evaluate(activePlayer);
 
-            if (score > -1 || score < 1)
+            if (score >= -1 && score <= 1)
             {
                 return score;
             }
-            int movesCount = gameState.GetNumberOfPossibleMoves();
-            G* allPossibleMoves = (G*)gameState.GeneratePossibleMoves();
-            if (isMax)
+            int movesCount = gameState.GetNumberOfPossibleMoves(activePlayer);
+            G* allPossibleMoves = (G*)gameState.GeneratePossibleMoves(activePlayer);
+            if (activePlayer == Player::first)
             {
-                int best = INT_MAX;
+                int best = INT_MIN;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], !isMax));
+                    best = max(best, Minmax(allPossibleMoves[i], activePlayer++));
                 }
                 return best;
             }
@@ -65,7 +66,7 @@ namespace gameSolver
                 int best = INT_MAX;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], !isMax));
+                    best = min(best, Minmax(allPossibleMoves[i], activePlayer++));
                 }
                 return best;
             }

@@ -1,7 +1,6 @@
 #pragma once
 #include <assert.h>
 #include <vector>
-#include <sstream>
 #include "Player.h"
 #include "GameEngine.h"
 
@@ -16,6 +15,7 @@ namespace gameEngines
 		static int N;
 		static int M;
 		static int K;
+		static bool ShowLeafes;
 
 		NMKEngine();
 		~NMKEngine();

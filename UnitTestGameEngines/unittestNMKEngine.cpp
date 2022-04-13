@@ -54,6 +54,7 @@ namespace UnitTestGameEngines
 		//{
 		//	NMKEngine::N = 2;
 		//	NMKEngine::M = 2;
+		//  NMKEngine::K = 2;
 		//	NMKEngine* eng = new NMKEngine();
 		//	Assert::AreEqual(eng->board[0][0], (char)0);
 		//	Assert::AreEqual(eng->board[0][1], (char)0);
@@ -66,6 +67,7 @@ namespace UnitTestGameEngines
 		//{
 		//	NMKEngine::N = 2;
 		//	NMKEngine::M = 2;
+		//  NMKEngine::K = 2;
 		//	NMKEngine* eng = new NMKEngine();
 		//	eng->board[0][0] = 1;
 		//	eng->board[0][1] = 2;
@@ -82,6 +84,7 @@ namespace UnitTestGameEngines
 		//{
 		//	NMKEngine::N = 2;
 		//	NMKEngine::M = 2;
+		//  NMKEngine::K = 2;
 		//	NMKEngine* eng = new NMKEngine();
 		//	Assert::AreEqual((int)eng->activePlayer, (int)Player::first);
 		//	delete eng;
@@ -91,6 +94,7 @@ namespace UnitTestGameEngines
 		//{
 		//	NMKEngine::N = 2;
 		//	NMKEngine::M = 2;
+		//  NMKEngine::K = 2;
 		//	NMKEngine* eng = new NMKEngine();
 		//	NMKEngine* allPossibleMoves = (NMKEngine*)eng->GeneratePossibleMoves();
 		//	Assert::AreEqual((int)allPossibleMoves[0].activePlayer, (int)Player::second);
@@ -101,6 +105,7 @@ namespace UnitTestGameEngines
 		//{
 		//	NMKEngine::N = 2;
 		//	NMKEngine::M = 2;
+		//  NMKEngine::K = 2;
 		//	NMKEngine* eng = new NMKEngine();
 		//	Assert::AreEqual(eng->emptyFieldsCount, 9);
 		//	delete eng;
@@ -125,6 +130,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			bool res = eng->IsGameOver();
 			Assert::IsFalse(res);
@@ -135,6 +141,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			GameEngine* res = eng->GeneratePossibleMoves(Player::first);
 			Assert::IsNotNull(res);
@@ -145,6 +152,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			Assert::AreEqual(std::string("0 0\n0 0\n"), eng->PrintGameState());
 			delete eng;
@@ -154,6 +162,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			Assert::AreEqual(std::string("1 0\n0 0\n"), res[0].PrintGameState());
@@ -167,6 +176,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
@@ -180,6 +190,7 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
@@ -192,12 +203,13 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
 			res = (NMKEngine*)res[1].GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[0].GeneratePossibleMoves(Player::second);
-			Assert::AreEqual(std::string("1 2\n1 2\n"), res[0].PrintGameState());
+			Assert::IsNull(res);
 			delete eng;
 		};
 
@@ -205,12 +217,13 @@ namespace UnitTestGameEngines
 		{
 			NMKEngine::N = 2;
 			NMKEngine::M = 2;
+			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
 			res = (NMKEngine*)res[1].GeneratePossibleMoves(Player::first);
-			res = (NMKEngine*)res[0].GeneratePossibleMoves(Player::second);
 			Assert::IsTrue((NMKEngine*)res[0].IsGameOver());
+			Assert::IsTrue((NMKEngine*)res[1].IsGameOver());
 			delete eng;
 		};
 
