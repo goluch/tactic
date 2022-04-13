@@ -16,7 +16,8 @@
 //#define NODE PNSNode<CaptureGoEngine, unsigned int>
 //#define NODE_WITHOUT_POINTERS PNSNodeWithoutPointers<CaptureGoEngine, unsigned int, unsigned int>
 
-using namespace gameSolver;
+using namespace std;
+//using namespace gameSolver;
 //using namespace gameDataStructures;
 using namespace gameEngines;
 
@@ -42,8 +43,16 @@ int _tmain(int argc, _TCHAR* argv[])
 		NMKEngine::K = 2;
 		NMKEngine::ShowLeafes = true;
 		NMKEngine nmkEng;
-		MinmaxAlg<NMKEngine> mmAlg;
-		mmAlg.Solve(nmkEng);
+		cout << nmkEng.PrintGameState();
+		int possibleMovesCount = nmkEng.GetNumberOfPossibleMoves(Player::first);
+		NMKEngine* newGames = (NMKEngine*)nmkEng.GeneratePossibleMoves(Player::first);
+		for (int i = 0; i < possibleMovesCount; i++)
+		{
+			cout << endl;
+			cout << newGames[i].PrintGameState();
+		}
+		//MinmaxAlg<NMKEngine> mmAlg;
+		//mmAlg.Solve(nmkEng);
 
 		//bool result;
 
