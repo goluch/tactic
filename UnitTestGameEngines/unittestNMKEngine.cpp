@@ -154,7 +154,7 @@ namespace UnitTestGameEngines
 			NMKEngine::M = 2;
 			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
-			Assert::AreEqual(std::string("0 0\n0 0\n"), eng->PrintGameState());
+			Assert::AreEqual(std::string("0 0\n0 0\n"), eng->GetGameState());
 			delete eng;
 		};
 
@@ -165,10 +165,10 @@ namespace UnitTestGameEngines
 			NMKEngine::K = 2;
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
-			Assert::AreEqual(std::string("1 0\n0 0\n"), res[0].PrintGameState());
-			Assert::AreEqual(std::string("0 1\n0 0\n"), res[1].PrintGameState());
-			Assert::AreEqual(std::string("0 0\n1 0\n"), res[2].PrintGameState());
-			Assert::AreEqual(std::string("0 0\n0 1\n"), res[3].PrintGameState());
+			Assert::AreEqual(std::string("1 0\n0 0\n"), res[0].GetGameState());
+			Assert::AreEqual(std::string("0 1\n0 0\n"), res[1].GetGameState());
+			Assert::AreEqual(std::string("0 0\n1 0\n"), res[2].GetGameState());
+			Assert::AreEqual(std::string("0 0\n0 1\n"), res[3].GetGameState());
 			delete eng;
 		};
 
@@ -180,9 +180,9 @@ namespace UnitTestGameEngines
 			NMKEngine* eng = new NMKEngine();
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
-			Assert::AreEqual(std::string("2 0\n1 0\n"), res[0].PrintGameState());
-			Assert::AreEqual(std::string("0 2\n1 0\n"), res[1].PrintGameState());
-			Assert::AreEqual(std::string("0 0\n1 2\n"), res[2].PrintGameState());
+			Assert::AreEqual(std::string("2 0\n1 0\n"), res[0].GetGameState());
+			Assert::AreEqual(std::string("0 2\n1 0\n"), res[1].GetGameState());
+			Assert::AreEqual(std::string("0 0\n1 2\n"), res[2].GetGameState());
 			delete eng;
 		};
 
@@ -195,8 +195,8 @@ namespace UnitTestGameEngines
 			NMKEngine* res = (NMKEngine*)eng->GeneratePossibleMoves(Player::first);
 			res = (NMKEngine*)res[2].GeneratePossibleMoves(Player::second);
 			res = (NMKEngine*)res[1].GeneratePossibleMoves(Player::first);
-			Assert::AreEqual(std::string("1 2\n1 0\n"), res[0].PrintGameState());
-			Assert::AreEqual(std::string("0 2\n1 1\n"), res[1].PrintGameState());
+			Assert::AreEqual(std::string("1 2\n1 0\n"), res[0].GetGameState());
+			Assert::AreEqual(std::string("0 2\n1 1\n"), res[1].GetGameState());
 			delete eng;
 		};
 		TEST_METHOD(TestGeneratePossibleMovesMethodOfSomeEngineAfterFourthMoveShouldReturnProperState)
@@ -238,5 +238,20 @@ namespace UnitTestGameEngines
 			Assert::AreEqual(1, res[0].Evaluate(Player::second));
 			delete eng;
 		};
+
+		//TEST_METHOD(TestSolveMethod3_3_3_NMK_SetGameState_Should_Throw_Exception)
+		//{
+		//	//111
+		//	//222
+		//	//000
+		//	Assert::ExpectException<std::exception>([]() {
+		//		NMKEngine::N = 3;
+		//		NMKEngine::M = 3;
+		//		NMKEngine::K = 3;
+		//		NMKEngine::ShowNodes = true;
+		//		NMKEngine nmkEng;
+		//		nmkEng.SetGameState("1 1 1 2 2 2 0 0 0");
+		//		});
+		//};
 	};
 }

@@ -2,11 +2,9 @@
 #define MINMAXALG
 
 #pragma once
-#include <time.h>
 #include "GameEngine.h"
 #include "PerformanceCounter.h"
 #include "limits.h"
-//#include "utils.h"
 
 namespace gameSolver
 {
@@ -26,7 +24,7 @@ namespace gameSolver
 
         }
 
-        bool Solve(G gameState, PerformanceCounter* pc = nullptr)
+        int Solve(G gameState, Player activePlayer, bool cut = false, PerformanceCounter* pc = nullptr)
         {
 
 #ifdef _DEBUG
@@ -35,8 +33,7 @@ namespace gameSolver
                 //liczymy performance
             }
 #endif
-            int res = Minmax(gameState, Player::first) == 1 ? true : false;
-            return res;
+            return Minmax(gameState, activePlayer);
         };
 
     protected:
@@ -45,32 +42,60 @@ namespace gameSolver
 
     private:
 
-        int Minmax(G gameState, Player activePlayer)
+        int Minmax(G& gameState, Player activePlayer)
         {
             int score = gameState.Evaluate(activePlayer);
+
+            //if (NMKEngine::ShowNodes)
+            //{
+            //    std::cout << gameState.GetGameState() << "Result: " << score << endl;
+            //}
 
             if (score >= -1 && score <= 1)
             {
                 return score;
             }
-            int movesCount = gameState.GetNumberOfPossibleMoves(activePlayer);
-            G* allPossibleMoves = (G*)gameState.GeneratePossibleMoves(activePlayer);
+            G* allPossibleMoves = NULL;
+            int movesCount = gameState.GeneratePossibleMoves(allPossibleMoves, activePlayer);
+            // ************** drukowanie **************
+            //if (NMKEngine::ShowNodes)
+            //{
+            //    for (int i = 0; i < movesCount; i++)
+            //    {
+            //        if (i) { cout << "------" << endl; }
+            //        std::cout << allPossibleMoves[i].GetGameState();
+            //    }
+            //    std::cout << "******" << endl;
+            //}
+            // *********** koniec drukowania ***********
             if (activePlayer == Player::first)
             {
                 int best = INT_MIN;
+                Player nextPlayer = activePlayer + 1;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], activePlayer + 1));
+                    best = max(best, Minmax(allPossibleMoves[i], nextPlayer));
+                    if (best == 1)
+                    {
+                        break;
+                    }
                 }
+                delete[] allPossibleMoves;
                 return best;
             }
             else
             {
                 int best = INT_MAX;
+                Player nextPlayer = activePlayer + 1;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = min(best, Minmax(allPossibleMoves[i], activePlayer + 1));
+                    best = min(best, Minmax(allPossibleMoves[i], nextPlayer));
+                    if (best == -1)
+                    {
+                        break;
+                    }
                 }
+                delete[] allPossibleMoves;
                 return best;
             }
         }

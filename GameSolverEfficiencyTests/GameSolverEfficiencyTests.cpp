@@ -36,29 +36,20 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//try
 	//{
-		NMKEngine::N = 3;
+		NMKEngine::N = 4;
 		NMKEngine::M = 3;
 		NMKEngine::K = 3;
-		NMKEngine::ShowLeafes = true;
+		NMKEngine::ShowNodes = true;
 		NMKEngine nmkEng;
 		//for (int i = 0; i < possibleMovesCount; i++)
 		//{
 		//	cout << endl;
-		//	cout << newGames[i].PrintGameState() << endl;
+		//	cout << newGames[i].GetGameState() << endl;
 		//}
 		//nmkEng.SetGameState();
-		nmkEng.board[1][1] = 2;
-		nmkEng.board[1][2] = 1;
-		nmkEng.board[1][3] = 2;
-		nmkEng.board[2][1] = 1;
-		nmkEng.board[2][2] = 2;
-		nmkEng.board[2][3] = 1;
-		nmkEng.board[3][1] = 0;
-		nmkEng.board[3][2] = 0;
-		nmkEng.board[3][3] = 0;
-		nmkEng.emptyFieldsCount = 3;
-		gameSolver:: MinmaxAlg<NMKEngine> mmAlg;
-		int result = mmAlg.Solve(nmkEng);
+		//nmkEng.SetGameState("2 1 2 1 2 1 0 0 0");
+		gameSolver::MinmaxAlg<NMKEngine> mmAlg;
+		cout << "Result: " << mmAlg.Solve(nmkEng, Player::first);
 
 		//bool result;
 

@@ -15,26 +15,24 @@ namespace gameEngines
 		static int N;
 		static int M;
 		static int K;
-		static int sizeN;
-		static int sizeM;
 		static int border;
-		static bool ShowLeafes;
-
-		int emptyFieldsCount;
-		std::vector<std::vector<char>> board;
+		static bool ShowNodes;
 
 		NMKEngine();
+		//NMKEngine(NMKEngine&);
 		~NMKEngine();
 
 		virtual bool IsGameOver();
 		virtual int Evaluate(Player);
-		virtual int GetNumberOfPossibleMoves(Player);
-		virtual GameEngine* GeneratePossibleMoves(Player);
+		virtual int GeneratePossibleMoves(GameEngine&&, Player);
 		bool Check_K_InRow(NMKEngine*, int, int, Player);
-		virtual std::string PrintGameState();
+		virtual std::string GetGameState();
+		virtual void SetGameState(std::string);
 
 	private:
 
+		int emptyFieldsCount;
+		std::vector<std::vector<char>> board;
 		bool gameOver = false;
 		Player winner;
 
