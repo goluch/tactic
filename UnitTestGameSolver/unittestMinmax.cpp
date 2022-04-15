@@ -109,6 +109,72 @@ namespace UnitTestGameSolver
 			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
 		}
 
+		TEST_METHOD(TestSolveMethod5_4_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 5;
+			NMKEngine::M = 4;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod4_5_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 4;
+			NMKEngine::M = 5;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod5_5_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 5;
+			NMKEngine::M = 5;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod6_5_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 6;
+			NMKEngine::M = 5;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod5_6_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 5;
+			NMKEngine::M = 6;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod6_6_2_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 6;
+			NMKEngine::M = 6;
+			NMKEngine::K = 2;
+			NMKEngine nmkEng;
+			nmkEng.SetGameState("0 0 0 1 2 0 2 0 0 0 1 0 0 0 0 0");
+			MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
 		TEST_METHOD(TestSolveMethod3_4_3_NMK_firstPlayerWins)
 		{
 			NMKEngine::N = 3;
@@ -129,15 +195,45 @@ namespace UnitTestGameSolver
 			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
 		}
 
-		TEST_METHOD(TestSolveMethod4_4_4_NMK_firstPlayerWins)
+		TEST_METHOD(TestSolveMethod5_4_3_NMK_firstPlayerWins)
 		{
-			NMKEngine::N = 4;
+			NMKEngine::N = 5;
 			NMKEngine::M = 4;
-			NMKEngine::K = 4;
+			NMKEngine::K = 3;
 			NMKEngine nmkEng;
 			gameSolver::MinmaxAlg<NMKEngine> mmAlg;
 			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
 		}
+
+		TEST_METHOD(TestSolveMethod4_5_3_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 4;
+			NMKEngine::M = 5;
+			NMKEngine::K = 3;
+			NMKEngine nmkEng;
+			gameSolver::MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		TEST_METHOD(TestSolveMethod5_5_3_NMK_firstPlayerWins)
+		{
+			NMKEngine::N = 5;
+			NMKEngine::M = 5;
+			NMKEngine::K = 3;
+			NMKEngine nmkEng;
+			gameSolver::MinmaxAlg<NMKEngine> mmAlg;
+			Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		}
+
+		//TEST_METHOD(TestSolveMethod4_4_4_NMK_firstPlayerWins)
+		//{
+		//	NMKEngine::N = 4;
+		//	NMKEngine::M = 4;
+		//	NMKEngine::K = 4;
+		//	NMKEngine nmkEng;
+		//	gameSolver::MinmaxAlg<NMKEngine> mmAlg;
+		//	Assert::AreEqual(1, mmAlg.Solve(nmkEng, Player::first));
+		//}
 
 		TEST_METHOD(TestSolveMethod3_3_3_NMK_secondPlayerWins_TwoFreePlaces)
 		{

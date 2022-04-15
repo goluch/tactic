@@ -15,7 +15,7 @@ Player operator++(Player& p, int)
 	}
 }
 
-Player operator+(Player& p, const int num)
+Player operator+(const Player& p, const int num)
 {
 	if (p == Player::undefined)
 	{
@@ -25,7 +25,6 @@ Player operator+(Player& p, const int num)
 	{
 		int nextP = static_cast<int>(p) + num;
 		if (nextP == playersNumber + num) { nextP = 1; }
-		p = static_cast<Player>(nextP);
-		return p;
+		return static_cast<Player>(nextP);
 	}
 }

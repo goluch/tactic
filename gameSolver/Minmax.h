@@ -42,7 +42,7 @@ namespace gameSolver
 
     private:
 
-        int Minmax(G& gameState, Player activePlayer)
+        int Minmax(G gameState, Player activePlayer)
         {
             int score = gameState.Evaluate(activePlayer);
 
@@ -55,8 +55,8 @@ namespace gameSolver
             {
                 return score;
             }
-            G* allPossibleMoves = NULL;
-            int movesCount = gameState.GeneratePossibleMoves(allPossibleMoves, activePlayer);
+            int movesCount;
+            G* allPossibleMoves = (G*)gameState.GeneratePossibleMoves(movesCount, activePlayer);
             // ************** drukowanie **************
             //if (NMKEngine::ShowNodes)
             //{
@@ -71,10 +71,9 @@ namespace gameSolver
             if (activePlayer == Player::first)
             {
                 int best = INT_MIN;
-                Player nextPlayer = activePlayer + 1;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], nextPlayer));
+                    best = max(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                     if (best == 1)
                     {
                         break;
@@ -86,10 +85,9 @@ namespace gameSolver
             else
             {
                 int best = INT_MAX;
-                Player nextPlayer = activePlayer + 1;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = min(best, Minmax(allPossibleMoves[i], nextPlayer));
+                    best = min(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                     if (best == -1)
                     {
                         break;

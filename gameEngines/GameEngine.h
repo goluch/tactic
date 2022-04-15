@@ -14,7 +14,7 @@ namespace gameEngines
 
 		virtual bool IsGameOver() = 0;
 		virtual int Evaluate(Player) = 0;
-		virtual int GeneratePossibleMoves(GameEngine&&, Player) = 0;
+		virtual GameEngine* GeneratePossibleMoves(int& , Player) = 0;
 		virtual std::string GetGameState() = 0;
 		virtual void SetGameState(std::string) = 0;
 	};

@@ -24,17 +24,19 @@ namespace gameEngines
 
 		virtual bool IsGameOver();
 		virtual int Evaluate(Player);
-		virtual int GeneratePossibleMoves(GameEngine&&, Player);
-		bool Check_K_InRow(NMKEngine*, int, int, Player);
+		virtual GameEngine* GeneratePossibleMoves(int& , Player);
 		virtual std::string GetGameState();
 		virtual void SetGameState(std::string);
 
 	private:
 
 		int emptyFieldsCount;
+		Player threat;
 		std::vector<std::vector<char>> board;
 		bool gameOver = false;
 		Player winner;
+
+		bool Check_K_InRow(NMKEngine*, int, int, Player);
 
 	};
 

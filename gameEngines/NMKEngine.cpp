@@ -14,36 +14,19 @@ int NMKEngine::border = 1;
 NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
+	threat = Player::undefined;
 	// the board has borders with a thickness of 1
 	this->board.resize(N + border * 2, vector<char>(M + border * 2, 0));
-	//int N + border = board.size();
-	//int M + border = board[0].size();
-	// filling boundaries -1 values - so far unnecessary
-	/*for (int i = 0; i < M + border; i++) {
+	// filling borders with -1 value
+	for (int i = 0; i < M + border * 2; i++) {
 		board[0][i] = - 1;
-		board[N + border - 1][i] = -1;
+		board[N + border][i] = -1;
 	}
-	for (int i = 0; i < sizeN; i++) {
+	for (int i = 0; i < N + border * 2; i++) {
 		board[i][0] = -1;
-		board[i][M + border - 1] = -1;
-	}*/
+		board[i][M + border] = -1;
+	}
 }
-
-//NMKEngine::NMKEngine(NMKEngine& copiedNMKEng)
-//{
-//	this->emptyFieldsCount = copiedNMKEng.emptyFieldsCount;
-//	this->gameOver = copiedNMKEng.gameOver;
-//	this->winner = copiedNMKEng.winner;
-//	this->board.resize(copiedNMKEng.board.size(), vector<char>(copiedNMKEng.board[0].size(), 0));
-//	// copy whole board
-//	for (int i = 1; i < N; i++)
-//	{
-//		for (int j = 1; j < M; j++)
-//		{
-//			this->board[i][j] = copiedNMKEng.board[i][j];
-//		}
-//	}
-//}
 
 NMKEngine::~NMKEngine()
 {
@@ -66,6 +49,18 @@ int NMKEngine::Evaluate(Player activePlayer) {
 			return -1;
 		}
 	}
+	if (this->threat == activePlayer + 1)
+	{
+		//cout << this->GetGameState();
+		if (this->threat == Player::first)
+		{
+			return 1;
+		}
+		else
+		{
+			return -1;
+		}
+	}
 	// max node
 	else if (activePlayer == Player::first)
 	{
@@ -78,11 +73,11 @@ int NMKEngine::Evaluate(Player activePlayer) {
 	}
 }
 
-int NMKEngine::GeneratePossibleMoves(GameEngine&& possibleMoves, Player activePlayer)
+GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player activePlayer)
 {
-	NMKEngine* probablyPossibleMoves = new NMKEngine[this->emptyFieldsCount];
 	if (!this->gameOver)
 	{
+		NMKEngine* possibleMoves = new NMKEngine[this->emptyFieldsCount];
 		// for all possible moves
 		for (int k = 0; k < this->emptyFieldsCount; k++)
 		{
@@ -91,7 +86,7 @@ int NMKEngine::GeneratePossibleMoves(GameEngine&& possibleMoves, Player activePl
 			{
 				for (int j = 1; j < M + border; j++)
 				{
-					probablyPossibleMoves[k].board[i][j] = this->board[i][j];
+					possibleMoves[k].board[i][j] = this->board[i][j];
 				}
 			}
 		}
@@ -104,31 +99,33 @@ int NMKEngine::GeneratePossibleMoves(GameEngine&& possibleMoves, Player activePl
 				if (this->board[i][j] == 0)
 				{
 					// put active player pawn
-					probablyPossibleMoves[actualPossibleMoveIndex].board[i][j] = (int)activePlayer;
+					possibleMoves[actualPossibleMoveIndex].board[i][j] = (int)activePlayer;
 					// update empty fields count
-					probablyPossibleMoves[actualPossibleMoveIndex].emptyFieldsCount = this->emptyFieldsCount - 1;
+					possibleMoves[actualPossibleMoveIndex].emptyFieldsCount = this->emptyFieldsCount - 1;
 
-					//cout << probablyPossibleMoves[actualPossibleMoveIndex].GetGameState() << endl;
+					//cout << possibleMoves[actualPossibleMoveIndex].GetGameState() << endl;
 					// check if someone won after the move
-					if (Check_K_InRow(&probablyPossibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
+					if (Check_K_InRow(&possibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
 					{
-						probablyPossibleMoves[actualPossibleMoveIndex].gameOver = true;
-						probablyPossibleMoves[actualPossibleMoveIndex].winner = activePlayer;
-						if (activePlayer == Player::first)
+						possibleMoves[0].gameOver = true;
+						possibleMoves[0].winner = activePlayer;
+						possibleMoves[0].emptyFieldsCount = possibleMoves[actualPossibleMoveIndex].emptyFieldsCount;
+						// copy whole board
+						for (int i = 1; i < N + border * 2; i++)
 						{
-							NMKEngine* bestMove = new NMKEngine(probablyPossibleMoves[actualPossibleMoveIndex]);
-							delete[] probablyPossibleMoves;
-							possibleMoves = (GameEngine&) bestMove;
-							return 1;
+							for (int j = 1; j < M + border * 2; j++)
+							{
+								possibleMoves[0].board[i][j] = possibleMoves[actualPossibleMoveIndex].board[i][j];
+							}
 						}
-						actualPossibleMoveIndex++;
-						continue;
+						generatedMovesCount = 1;
+						return possibleMoves;
 					}
 					// check if bo&ad is full game is over and nobody win
-					if (probablyPossibleMoves[actualPossibleMoveIndex].emptyFieldsCount == 0)
+					if (possibleMoves[actualPossibleMoveIndex].emptyFieldsCount == 0)
 					{
-						probablyPossibleMoves[actualPossibleMoveIndex].gameOver = true;
-						probablyPossibleMoves[actualPossibleMoveIndex].winner = Player::undefined;
+						possibleMoves[actualPossibleMoveIndex].gameOver = true;
+						possibleMoves[actualPossibleMoveIndex].winner = Player::undefined;
 						actualPossibleMoveIndex++;
 						continue;
 					}
@@ -136,20 +133,26 @@ int NMKEngine::GeneratePossibleMoves(GameEngine&& possibleMoves, Player activePl
 				}
 			}
 		}
-		possibleMoves = (GameEngine&) probablyPossibleMoves;
-		return this->emptyFieldsCount;
+		generatedMovesCount = this->emptyFieldsCount;
+		return possibleMoves;
 	}
-	return 0;
+	generatedMovesCount = 0;
+	return NULL;
 }
 
 bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player activePlayer)
 {
 	int nextInRow;
 	int foundInRow;
+	int foundedThreats = 0;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i - nextInRow][j] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i - nextInRow][j] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -158,6 +161,10 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->board[i + nextInRow][j] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i + nextInRow][j] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -166,10 +173,23 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		return true;
 	}
+	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	{
+		if (possibleMoves->threat == Player::undefined)
+		{
+			//cout << possibleMoves->GetGameState();
+			possibleMoves->threat = activePlayer;
+		}
+	}
+	foundedThreats = 0;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i][j - nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i][j - nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -178,6 +198,10 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->board[i][j + nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i][j + nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -186,10 +210,23 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		return true;
 	}
+	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	{
+		if (possibleMoves->threat == Player::undefined)
+		{
+			//cout << possibleMoves->GetGameState() << endl;
+			possibleMoves->threat = activePlayer;
+		}
+	}
+	foundedThreats = 0;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i - nextInRow][j - nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i - nextInRow][j - nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -198,6 +235,10 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->board[i + nextInRow][j + nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i + nextInRow][j + nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -206,10 +247,23 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		return true;
 	}
+	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	{
+		if (possibleMoves->threat == Player::undefined)
+		{
+			//cout << possibleMoves->GetGameState();
+			possibleMoves->threat = activePlayer;
+		}
+	}
+	foundedThreats = 0;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i + nextInRow][j - nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i + nextInRow][j - nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -218,6 +272,10 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->board[i - nextInRow][j + nextInRow] != (int)activePlayer)
 		{
+			if (possibleMoves->board[i - nextInRow][j + nextInRow] == (int)Player::undefined)
+			{
+				foundedThreats++;
+			}
 			break;
 		}
 		foundInRow++;
@@ -226,15 +284,23 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		return true;
 	}
+	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	{
+		if (possibleMoves->threat == Player::undefined)
+		{
+			//cout << possibleMoves->GetGameState();
+			possibleMoves->threat = activePlayer;
+		}
+	}
 	return false;
 }
 
 std::string NMKEngine::GetGameState()
 {
 	stringstream ss;
-	for (int i = 1; i < board.size() - 1; i++)
+	for (int i = 1; i < N + border; i++)
 	{
-		for (int j = 1; j < board[0].size() - 1; j++)
+		for (int j = 1; j < M + border; j++)
 		{
 			ss << (j == 1 ? "" : " ") << (int)board[i][j];
 		}

@@ -36,10 +36,10 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//try
 	//{
-		NMKEngine::N = 4;
-		NMKEngine::M = 3;
+		NMKEngine::N = 3;
+		NMKEngine::M = 4;
 		NMKEngine::K = 3;
-		NMKEngine::ShowNodes = true;
+		//NMKEngine::ShowNodes = true;
 		NMKEngine nmkEng;
 		//for (int i = 0; i < possibleMovesCount; i++)
 		//{
