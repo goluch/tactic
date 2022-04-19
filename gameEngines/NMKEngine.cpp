@@ -7,7 +7,9 @@ using namespace gameEngines;
 int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
-bool NMKEngine::ShowNodes = false;
+bool NMKEngine::showNodes = false;
+bool NMKEngine::cutIfGameOver = false;
+string NMKEngine::Info = "";
 
 int NMKEngine::border = 1;
 
@@ -103,23 +105,33 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 					// update empty fields count
 					possibleMoves[actualPossibleMoveIndex].emptyFieldsCount = this->emptyFieldsCount - 1;
 
-					//cout << possibleMoves[actualPossibleMoveIndex].GetGameState() << endl;
+					if (showNodes)
+					{
+						cout << Info << " " << (int)(activePlayer + 1) << endl << possibleMoves[actualPossibleMoveIndex].GetGameState() << endl;
+					}
 					// check if someone won after the move
 					if (Check_K_InRow(&possibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
 					{
-						possibleMoves[0].gameOver = true;
-						possibleMoves[0].winner = activePlayer;
-						possibleMoves[0].emptyFieldsCount = possibleMoves[actualPossibleMoveIndex].emptyFieldsCount;
-						// copy whole board
-						for (int i = 1; i < N + border * 2; i++)
+						if (cutIfGameOver)
 						{
-							for (int j = 1; j < M + border * 2; j++)
+							possibleMoves[0].gameOver = true;
+							possibleMoves[0].winner = activePlayer;
+							possibleMoves[0].emptyFieldsCount = possibleMoves[actualPossibleMoveIndex].emptyFieldsCount;
+							// copy whole board
+							for (int i = 1; i < N + border * 2; i++)
 							{
-								possibleMoves[0].board[i][j] = possibleMoves[actualPossibleMoveIndex].board[i][j];
+								for (int j = 1; j < M + border * 2; j++)
+								{
+									possibleMoves[0].board[i][j] = possibleMoves[actualPossibleMoveIndex].board[i][j];
+								}
 							}
+							generatedMovesCount = 1;
 						}
-						generatedMovesCount = 1;
-						return possibleMoves;
+						else
+						{
+							possibleMoves[actualPossibleMoveIndex].gameOver = true;
+							possibleMoves[actualPossibleMoveIndex].winner = activePlayer;
+						}
 					}
 					// check if bo&ad is full game is over and nobody win
 					if (possibleMoves[actualPossibleMoveIndex].emptyFieldsCount == 0)

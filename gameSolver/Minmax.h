@@ -4,10 +4,12 @@
 #pragma once
 #include "GameEngine.h"
 #include "PerformanceCounter.h"
-#include "limits.h"
+#include <limits.h>
 
 namespace gameSolver
 {
+    static bool cutIfGameOver;
+
     template<typename G>
     class MinmaxAlg
     {
@@ -51,7 +53,7 @@ namespace gameSolver
             //    std::cout << gameState.GetGameState() << "Result: " << score << endl;
             //}
 
-            if (score >= -1 && score <= 1)
+            if (cutIfGameOver && score >= -1 && score <= 1)
             {
                 return score;
             }

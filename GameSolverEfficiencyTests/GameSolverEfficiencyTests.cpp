@@ -8,8 +8,6 @@
 #include "Minmax.h"
 //#include "exceptions.h"
 #include "NMKEngine.h"
-using namespace gameEngines;
-//using namespace gameSolver;
 
 //#define NODE PNSNode<CaptureGoEngine, unsigned int>
 //#define NODE_WITHOUT_POINTERS PNSNodeWithoutPointers<CaptureGoEngine, unsigned int, unsigned int>
@@ -37,7 +35,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//try
 	//{
 		NMKEngine::N = 3;
-		NMKEngine::M = 4;
+		NMKEngine::M = 3;
 		NMKEngine::K = 3;
 		//NMKEngine::ShowNodes = true;
 		NMKEngine nmkEng;
@@ -46,8 +44,8 @@ int _tmain(int argc, _TCHAR* argv[])
 		//	cout << endl;
 		//	cout << newGames[i].GetGameState() << endl;
 		//}
-		//nmkEng.SetGameState();
-		//nmkEng.SetGameState("2 1 2 1 2 1 0 0 0");
+		nmkEng.SetGameState("2 1 2 \n 1 2 1 \n 0 0 0");
+		cout << nmkEng.GetGameState();
 		gameSolver::MinmaxAlg<NMKEngine> mmAlg;
 		cout << "Result: " << mmAlg.Solve(nmkEng, Player::first);
 
