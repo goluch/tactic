@@ -348,7 +348,7 @@ void NMKEngine::SetGameState(std::string newGameState)
 			{
 				if (Check_K_InRow(this, i, j, (Player)value))
 				{
-					if (this->winner != Player::undefined)
+					if (this->winner != Player::undefined && this->winner == this->winner + 1)
 					{
 						throw new exception;
 					}

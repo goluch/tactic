@@ -48,6 +48,36 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			continue;
 		}
+		if (command == "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER")
+		{
+			cin >> NMKEngine::N;
+			cin >> NMKEngine::M;
+			cin >> NMKEngine::K;
+			NMKEngine::cutIfGameOver = true;
+			int activePlayer;
+			cin >> activePlayer;
+			NMKEngine nmkEng;
+			string number;
+			ostringstream gameState;
+			for (int i = 0; i < NMKEngine::N * NMKEngine::M; i++)
+			{
+				if (i)
+				{
+					gameState << " ";
+				}
+				cin >> number;
+				gameState << number;
+			}
+			nmkEng.SetGameState(gameState.str());
+			int possibmeMovesCount;
+			NMKEngine* possibmeMoves = (NMKEngine*)nmkEng.GeneratePossibleMoves(possibmeMovesCount, (Player)activePlayer);
+			cout << possibmeMovesCount << endl;
+			for (int i = 0; i < possibmeMovesCount; i++)
+			{
+				cout << possibmeMoves[i].GetGameState();
+			}
+			continue;
+		}
 		throw new exception("Bad command");
 	}
 	cout.flush();
