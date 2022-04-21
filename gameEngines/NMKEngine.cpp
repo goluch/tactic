@@ -104,11 +104,6 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 					possibleMoves[actualPossibleMoveIndex].board[i][j] = (int)activePlayer;
 					// update empty fields count
 					possibleMoves[actualPossibleMoveIndex].emptyFieldsCount = this->emptyFieldsCount - 1;
-
-					if (showNodes)
-					{
-						cout << Info << " " << (int)(activePlayer + 1) << endl << possibleMoves[actualPossibleMoveIndex].GetGameState() << endl;
-					}
 					// check if someone won after the move
 					if (Check_K_InRow(&possibleMoves[actualPossibleMoveIndex], i, j, activePlayer))
 					{
@@ -126,6 +121,14 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 								}
 							}
 							generatedMovesCount = 1;
+							if (showNodes)
+							{
+								for (int i = 0; i < generatedMovesCount; i++)
+								{
+									cout << Info << " " << (int)(activePlayer + 1) << endl << possibleMoves[i].GetGameState() << endl;
+								}
+							}
+							return possibleMoves;
 						}
 						else
 						{
@@ -146,6 +149,13 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 			}
 		}
 		generatedMovesCount = this->emptyFieldsCount;
+		if (showNodes)
+		{
+			for (int i = 0; i < generatedMovesCount; i++)
+			{
+				cout << Info << " " << (int)(activePlayer + 1) << endl << possibleMoves[i].GetGameState() << endl;
+			}
+		}
 		return possibleMoves;
 	}
 	generatedMovesCount = 0;
@@ -181,7 +191,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		}
 		foundInRow++;
 	}
-	if (foundInRow == K)
+	if (foundInRow >= K)
 	{
 		return true;
 	}
@@ -189,7 +199,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->threat == Player::undefined)
 		{
-			//cout << possibleMoves->GetGameState();
+			//cout << possibleMoves->GetGameState() << endl;
 			possibleMoves->threat = activePlayer;
 		}
 	}
@@ -218,7 +228,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		}
 		foundInRow++;
 	}
-	if (foundInRow == K)
+	if (foundInRow >= K)
 	{
 		return true;
 	}
@@ -255,7 +265,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		}
 		foundInRow++;
 	}
-	if (foundInRow == K)
+	if (foundInRow >= K)
 	{
 		return true;
 	}
@@ -263,7 +273,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->threat == Player::undefined)
 		{
-			//cout << possibleMoves->GetGameState();
+			//cout << possibleMoves->GetGameState() << endl;
 			possibleMoves->threat = activePlayer;
 		}
 	}
@@ -292,7 +302,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		}
 		foundInRow++;
 	}
-	if (foundInRow == K)
+	if (foundInRow >= K)
 	{
 		return true;
 	}
@@ -300,7 +310,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	{
 		if (possibleMoves->threat == Player::undefined)
 		{
-			//cout << possibleMoves->GetGameState();
+			//cout << possibleMoves->GetGameState() << endl;
 			possibleMoves->threat = activePlayer;
 		}
 	}

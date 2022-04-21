@@ -45,12 +45,21 @@ void GenerateAllBoardsWithCommand(int N, int M, int K, bool cutIfGameOverInEngin
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//GenerateAllBoardsWithCommand(2, 2, 2, false, false, "GEN_ALL_POS_MOV");
-	//GenerateAllBoardsWithCommand(2, 3, 2, false, false, "GEN_ALL_POS_MOV");
+	GenerateAllBoardsWithCommand(2, 3, 2, false, false, "GEN_ALL_POS_MOV");
 	//GenerateAllBoardsWithCommand(3, 3, 2, false, false, "GEN_ALL_POS_MOV");
 	//GenerateAllBoardsWithCommand(3, 3, 3, false, false, "GEN_ALL_POS_MOV");
+
 	//GenerateAllBoardsWithCommand(2, 2, 2, true, false, "GEN_ALL_POS_MOV");
 	//GenerateAllBoardsWithCommand(2, 3, 2, true, false, "GEN_ALL_POS_MOV");
-	GenerateAllBoardsWithCommand(3, 3, 2, true, false, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(3, 3, 2, true, false, "GEN_ALL_POS_MOV");
 	//GenerateAllBoardsWithCommand(3, 3, 3, true, false, "GEN_ALL_POS_MOV");
+
+	//GenerateAllBoardsWithCommand(2, 2, 2, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(2, 3, 2, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(3, 3, 2, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(3, 3, 3, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(3, 4, 3, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(4, 4, 3, true, true, "GEN_ALL_POS_MOV");
+	//GenerateAllBoardsWithCommand(4, 5, 3, true, true, "GEN_ALL_POS_MOV");
 }
 
