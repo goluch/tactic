@@ -29,7 +29,7 @@ void GenerateAllBoardsWithCommand(int N, int M, int K, bool cutIfGameOverInEngin
 
 	NMKEngine nmkEng;
 
-	gameSolver::cutIfGameOver = cutIfGameOverInAlgorithm;
+	gameSolver::cutIfPossible = cutIfGameOverInAlgorithm;
 	MinmaxAlg<NMKEngine> mmAlg;
 	mmAlg.Solve(nmkEng, Player::first);
 
@@ -56,6 +56,13 @@ int _tmain(int argc, _TCHAR* argv[])
 	//GenerateAllBoardsWithCommand(3, 3, 2, false, false, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER");
 	//GenerateAllBoardsWithCommand(3, 3, 3, true, true, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER");
 	//GenerateAllBoardsWithCommand(3, 4, 3, true, true, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER");
-	GenerateAllBoardsWithCommand(4, 4, 3, true, true, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER");
+	//GenerateAllBoardsWithCommand(4, 4, 3, true, true, "GEN_ALL_POS_MOV_CUT_IF_GAME_OVER");
+
+	//GenerateAllBoardsWithCommand(2, 2, 2, false, false, "SOLVE_GAME_STATE");
+	//GenerateAllBoardsWithCommand(2, 3, 2, false, false, "SOLVE_GAME_STATE");
+	//GenerateAllBoardsWithCommand(3, 3, 2, false, false, "SOLVE_GAME_STATE");
+	//GenerateAllBoardsWithCommand(3, 3, 3, true, true, "SOLVE_GAME_STATE");
+	GenerateAllBoardsWithCommand(3, 4, 3, true, true, "SOLVE_GAME_STATE");
+	//GenerateAllBoardsWithCommand(4, 4, 3, true, true, "SOLVE_GAME_STATE");
 }
 

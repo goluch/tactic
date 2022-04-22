@@ -8,7 +8,7 @@
 
 namespace gameSolver
 {
-    static bool cutIfGameOver;
+    static bool cutIfPossible;
 
     template<typename G>
     class MinmaxAlg
@@ -26,7 +26,7 @@ namespace gameSolver
 
         }
 
-        int Solve(G gameState, Player activePlayer, bool cut = false, PerformanceCounter* pc = nullptr)
+        int Solve(G gameState, Player activePlayer, PerformanceCounter* pc = nullptr)
         {
 
 #ifdef _DEBUG
@@ -53,7 +53,7 @@ namespace gameSolver
             //    std::cout << gameState.GetGameState() << "Result: " << score << endl;
             //}
 
-            if (cutIfGameOver && score >= -1 && score <= 1)
+            if (score >= -1 && score <= 1)
             {
                 return score;
             }
@@ -76,7 +76,7 @@ namespace gameSolver
                 for (int i = 0; i < movesCount; i++)
                 {
                     best = max(best, Minmax(allPossibleMoves[i], activePlayer + 1));
-                    if (best == 1)
+                    if (cutIfPossible && best == 1)
                     {
                         break;
                     }
@@ -90,7 +90,7 @@ namespace gameSolver
                 for (int i = 0; i < movesCount; i++)
                 {
                     best = min(best, Minmax(allPossibleMoves[i], activePlayer + 1));
-                    if (best == -1)
+                    if (cutIfPossible && best == -1)
                     {
                         break;
                     }

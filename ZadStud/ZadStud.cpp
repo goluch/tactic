@@ -78,6 +78,45 @@ int _tmain(int argc, _TCHAR* argv[])
 			}
 			continue;
 		}
+		if (command == "SOLVE_GAME_STATE")
+		{
+			cin >> NMKEngine::N;
+			cin >> NMKEngine::M;
+			cin >> NMKEngine::K;
+			NMKEngine::cutIfGameOver = false;
+			int activePlayer;
+			cin >> activePlayer;
+			NMKEngine nmkEng;
+			string number;
+			ostringstream gameState;
+			for (int i = 0; i < NMKEngine::N * NMKEngine::M; i++)
+			{
+				if (i)
+				{
+					gameState << " ";
+				}
+				cin >> number;
+				gameState << number;
+			}
+			nmkEng.SetGameState(gameState.str());
+			MinmaxAlg<NMKEngine> minMaxAlg;
+			int result = minMaxAlg.Solve(nmkEng, (Player) activePlayer);
+			switch (result)
+			{
+				case -1:
+					cout << "SECOND_PLAYER_WINS" << endl;
+					break;
+				case 0:
+					cout << "BOTH_PLAYERS_TIE" << endl;
+					break;
+				case 1:
+					cout << "FIRST_PLAYER_WINS" << endl;
+					break;
+			default:
+				break;
+			}
+			continue;
+		}
 		throw new exception("Bad command");
 	}
 	cout.flush();
