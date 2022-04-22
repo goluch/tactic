@@ -29,8 +29,8 @@ void GenerateAllBoardsWithCommand(int N, int M, int K, bool cutIfGameOverInEngin
 
 	NMKEngine nmkEng;
 
-	gameSolver::cutIfPossible = cutIfGameOverInAlgorithm;
 	MinmaxAlg<NMKEngine> mmAlg;
+	mmAlg.cutIfPossible = cutIfGameOverInAlgorithm;
 	mmAlg.Solve(nmkEng, Player::first);
 
 	NMKEngine::N = lastN;
@@ -62,7 +62,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//GenerateAllBoardsWithCommand(2, 3, 2, false, false, "SOLVE_GAME_STATE");
 	//GenerateAllBoardsWithCommand(3, 3, 2, false, false, "SOLVE_GAME_STATE");
 	//GenerateAllBoardsWithCommand(3, 3, 3, true, true, "SOLVE_GAME_STATE");
-	GenerateAllBoardsWithCommand(3, 4, 3, true, true, "SOLVE_GAME_STATE");
-	//GenerateAllBoardsWithCommand(4, 4, 3, true, true, "SOLVE_GAME_STATE");
+	//GenerateAllBoardsWithCommand(3, 4, 3, true, true, "SOLVE_GAME_STATE");
+	GenerateAllBoardsWithCommand(4, 4, 3, true, true, "SOLVE_GAME_STATE");
 }
 

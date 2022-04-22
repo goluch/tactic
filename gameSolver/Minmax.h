@@ -2,19 +2,20 @@
 #define MINMAXALG
 
 #pragma once
+#include "utils.h"
 #include "GameEngine.h"
 #include "PerformanceCounter.h"
 #include <limits.h>
 
 namespace gameSolver
 {
-    static bool cutIfPossible;
-
     template<typename G>
     class MinmaxAlg
     {
-
+        
     public:
+
+        bool cutIfPossible;
 
         MinmaxAlg()
         {
@@ -75,7 +76,7 @@ namespace gameSolver
                 int best = INT_MIN;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = max(best, Minmax(allPossibleMoves[i], activePlayer + 1));
+                    best = maximum(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                     if (cutIfPossible && best == 1)
                     {
                         break;
@@ -89,7 +90,7 @@ namespace gameSolver
                 int best = INT_MAX;
                 for (int i = 0; i < movesCount; i++)
                 {
-                    best = min(best, Minmax(allPossibleMoves[i], activePlayer + 1));
+                    best = minimum(best, Minmax(allPossibleMoves[i], activePlayer + 1));
                     if (cutIfPossible && best == -1)
                     {
                         break;

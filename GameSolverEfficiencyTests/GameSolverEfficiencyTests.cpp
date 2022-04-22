@@ -19,6 +19,7 @@ using namespace gameEngines;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+
 	// Przyk³adowy test silnika gry - do skasowania
 
 
@@ -47,6 +48,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		nmkEng.SetGameState("2 1 2 \n 1 2 1 \n 0 0 0");
 		cout << nmkEng.GetGameState();
 		gameSolver::MinmaxAlg<NMKEngine> mmAlg;
+		mmAlg.cutIfPossible = false;
 		cout << "Result: " << mmAlg.Solve(nmkEng, Player::first);
 
 		//bool result;

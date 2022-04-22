@@ -7,39 +7,39 @@
 namespace gameEngines
 {
 
-	class NMKEngine
-		: public GameEngine
-	{
-	public:
+    class NMKEngine
+        : public GameEngine
+    {
+    public:
 
-		static int N;
-		static int M;
-		static int K;
-		static int border;
-		static bool showNodes;
-		static bool cutIfGameOver;
-		static string Info;
+        static int N;
+        static int M;
+        static int K;
+        static int border;
+        static bool showNodes;
+        static bool cutIfGameOver;
+        static string Info;
 
-		NMKEngine();
-		//NMKEngine(NMKEngine&);
-		~NMKEngine();
+        NMKEngine();
+        //NMKEngine(NMKEngine&);
+        ~NMKEngine();
 
-		virtual bool IsGameOver();
-		virtual int Evaluate(Player);
-		virtual GameEngine* GeneratePossibleMoves(int& , Player);
-		virtual string GetGameState();
-		virtual void SetGameState(string);
+        virtual bool IsGameOver();
+        virtual int Evaluate(Player);
+        virtual GameEngine* GeneratePossibleMoves(int&, Player);
+        virtual string GetGameState();
+        virtual void SetGameState(string);
 
-	private:
+    private:
 
-		int emptyFieldsCount;
-		Player threat;
-		vector<vector<char>> board;
-		bool gameOver = false;
-		Player winner;
+        int emptyFieldsCount;
+        Player threat;
+        vector<vector<char>> board;
+        bool gameOver = false;
+        Player winner;
 
-		bool Check_K_InRow(NMKEngine*, int, int, Player);
+        bool Check_K_InRow(NMKEngine*, int, int, Player);
 
-	};
+    };
 
 }
