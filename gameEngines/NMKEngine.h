@@ -6,6 +6,11 @@
 
 namespace gameEngines
 {
+    struct BoardIndex
+    {
+        int x;
+        int y;
+    };
 
     class NMKEngine
         : public GameEngine
@@ -34,7 +39,7 @@ namespace gameEngines
 
         int emptyFieldsCount;
         BoardIndex threatIndex;
-        Player threat;
+        int foundedThreats;
         vector<vector<char>> board;
         bool gameOver = false;
         Player winner;

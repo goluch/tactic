@@ -4,12 +4,6 @@
 using namespace std;
 using namespace gameEngines;
 
-struct BoardIndex
-{
-	int x;
-	int y;
-};
-
 int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
@@ -23,7 +17,7 @@ int NMKEngine::border = 1;
 NMKEngine::NMKEngine()
 {
 	emptyFieldsCount = N * M;
-	threat = Player::undefined;
+	foundedThreats = 0;
 	// the board has borders with a thickness of 1
 	this->board.resize(N + border * 2, vector<char>(M + border * 2, 0));
 	// filling borders with -1 value
@@ -60,18 +54,6 @@ int NMKEngine::Evaluate(Player activePlayer) {
 			return -1;
 		}
 	}
-	if (this->threat == activePlayer + 1)
-	{
-		//cout << this->GetGameState();
-		if (this->threat == Player::first)
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
-	}
 	// max node
 	else if (activePlayer == Player::first)
 	{
@@ -88,6 +70,27 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 {
 	if (!this->gameOver)
 	{
+		if (this->foundedThreats > 0)
+		{
+			if (this->foundedThreats > 0)
+			{
+				throw new exception("too many threats");
+			}
+			else
+			{
+				this->emptyFieldsCount = 1;
+				NMKEngine* possibleMoves = new NMKEngine[this->emptyFieldsCount];
+				// copy whole board
+				for (int i = 1; i < N + border; i++)
+				{
+					for (int j = 1; j < M + border; j++)
+					{
+						possibleMoves[0].board[i][j] = this->board[i][j];
+					}
+				}
+				possibleMoves[0].board[threatIndex.x][threatIndex.y] = (int)activePlayer;
+			}
+		}
 		NMKEngine* possibleMoves = new NMKEngine[this->emptyFieldsCount];
 		// for all possible moves
 		for (int k = 0; k < this->emptyFieldsCount; k++)
@@ -194,18 +197,32 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	// W kolejnym generator wygeneruje mo¿liwe posuniêcia jedynie dla zagro¿onych pól
 	int nextInRow;
 	int foundInRow;
-	int foundedThreats = 0;
+	bool foundEmptySpace = false;
+	int foundedPossibleThreats = 0;
+	foundedThreats = 0;
+	
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i - nextInRow][j] != (int)activePlayer)
 		{
 			if (possibleMoves->board[i - nextInRow][j] == (int)Player::undefined)
 			{
-				externalFirstThreatIndex.x = i - nextInRow;
-				externalFirstThreatIndex.y = j;
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
@@ -215,34 +232,66 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i + nextInRow][j] == (int)Player::undefined)
 			{
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
-	if (foundInRow >= K)
+	if (foundInRow >= K && !foundEmptySpace)
 	{
 		return true;
 	}
-	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (possibleMoves->threat == Player::undefined)
+		if (foundedPossibleThreats > 1)
 		{
+			return true;
+		}
+		else
+		{
+			foundedThreats += foundedPossibleThreats;
 			//cout << possibleMoves->GetGameState() << endl;
-			possibleMoves->threat = activePlayer;
 		}
 	}
-	foundedThreats = 0;
+
+	foundedPossibleThreats = 0;
+	foundEmptySpace = false;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
 		if (possibleMoves->board[i][j - nextInRow] != (int)activePlayer)
 		{
 			if (possibleMoves->board[i][j - nextInRow] == (int)Player::undefined)
 			{
+				threatIndex.x = i;
+				threatIndex.y = j - nextInRow;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
@@ -252,71 +301,66 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i][j + nextInRow] == (int)Player::undefined)
 			{
+				threatIndex.x = i;
+				threatIndex.y = j + nextInRow;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
-	if (foundInRow >= K)
+	if (foundInRow >= K && !foundEmptySpace)
 	{
 		return true;
 	}
-	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (possibleMoves->threat == Player::undefined)
+		if (foundedPossibleThreats > 1)
 		{
+			return true;
+		}
+		else
+		{
+			foundedThreats += foundedPossibleThreats;
 			//cout << possibleMoves->GetGameState() << endl;
-			possibleMoves->threat = activePlayer;
 		}
 	}
-	foundedThreats = 0;
+
+	foundedPossibleThreats = 0;
+	foundEmptySpace = false;
 	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
 	{
-		if (possibleMoves->board[i - nextInRow][j - nextInRow] != (int)activePlayer)
-		{
-			if (possibleMoves->board[i - nextInRow][j - nextInRow] == (int)Player::undefined)
-			{
-				foundedThreats++;
-			}
-			break;
-		}
-		foundInRow++;
-	}
-	for (nextInRow = 1; nextInRow < K; nextInRow++)
-	{
-		if (possibleMoves->board[i + nextInRow][j + nextInRow] != (int)activePlayer)
-		{
-			if (possibleMoves->board[i + nextInRow][j + nextInRow] == (int)Player::undefined)
-			{
-				foundedThreats++;
-			}
-			break;
-		}
-		foundInRow++;
-	}
-	if (foundInRow >= K)
-	{
-		return true;
-	}
-	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
-	{
-		if (possibleMoves->threat == Player::undefined)
-		{
-			//cout << possibleMoves->GetGameState() << endl;
-			possibleMoves->threat = activePlayer;
-		}
-	}
-	foundedThreats = 0;
-	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
-	{
-		if (possibleMoves->board[i + nextInRow][j - nextInRow] != (int)activePlayer)
+		if (board[i + nextInRow][j - nextInRow] != (int)activePlayer)
 		{
 			if (possibleMoves->board[i + nextInRow][j - nextInRow] == (int)Player::undefined)
 			{
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j - nextInRow;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
@@ -326,24 +370,111 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i - nextInRow][j + nextInRow] == (int)Player::undefined)
 			{
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j + nextInRow;
 				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
 			}
-			break;
+			else
+			{
+				break;
+			}
 		}
 		foundInRow++;
 	}
-	if (foundInRow >= K)
+	if (foundInRow >= K && !foundEmptySpace)
 	{
 		return true;
 	}
-	if (foundInRow > 1 && foundInRow == K - 1 && foundedThreats == 2)
+	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (possibleMoves->threat == Player::undefined)
+		if (foundedPossibleThreats > 1)
 		{
+			return true;
+		}
+		else
+		{
+			foundedThreats += foundedPossibleThreats;
 			//cout << possibleMoves->GetGameState() << endl;
-			possibleMoves->threat = activePlayer;
 		}
 	}
+
+	foundedPossibleThreats = 0;
+	foundEmptySpace = false;
+	for (foundInRow = 1, nextInRow = 1; nextInRow < K; nextInRow++)
+	{
+		if (board[i + nextInRow][j + nextInRow] != (int)activePlayer)
+		{
+			if (possibleMoves->board[i + nextInRow][j + nextInRow] == (int)Player::undefined)
+			{
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j + nextInRow;
+				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		foundInRow++;
+	}
+	for (nextInRow = 1; nextInRow < K; nextInRow++)
+	{
+		if (possibleMoves->board[i - nextInRow][j - nextInRow] != (int)activePlayer)
+		{
+			if (possibleMoves->board[i - nextInRow][j - nextInRow] == (int)Player::undefined)
+			{
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j - nextInRow;
+				foundedThreats++;
+				if (foundEmptySpace)
+				{
+					break;
+				}
+				else
+				{
+					foundEmptySpace = true;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		foundInRow++;
+	}
+	if (foundInRow >= K && !foundEmptySpace)
+	{
+		return true;
+	}
+	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
+	{
+		if (foundedPossibleThreats > 1)
+		{
+			return true;
+		}
+		else
+		{
+			foundedThreats += foundedPossibleThreats;
+			//cout << possibleMoves->GetGameState() << endl;
+		}
+	}
+
 	return false;
 }
 
