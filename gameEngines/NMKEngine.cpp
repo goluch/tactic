@@ -4,9 +4,16 @@
 using namespace std;
 using namespace gameEngines;
 
+struct BoardIndex
+{
+	int x;
+	int y;
+};
+
 int NMKEngine::N;
 int NMKEngine::M;
 int NMKEngine::K;
+
 bool NMKEngine::showNodes = false;
 bool NMKEngine::cutIfGameOver = false;
 string NMKEngine::Info = "";
@@ -28,6 +35,8 @@ NMKEngine::NMKEngine()
 		board[i][0] = -1;
 		board[i][M + border] = -1;
 	}
+	threatIndex.x = -1;
+	threatIndex.y = -1;
 }
 
 NMKEngine::~NMKEngine()
@@ -164,6 +173,25 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 
 bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player activePlayer)
 {
+	// Sprawdzamy, czy utworzyliœmy rz¹d pionów o d³ugoœci K
+	// Przy okazji sprawdzamy, czy wygenerowaliœmy zagro¿enie
+	// Zagro¿enie to wolne pole których po³o¿enie pionka powoduje wygran¹ aktualnego gracza
+	// Wystêpuj¹ dwa rodzaje zagro¿eñ:
+	// - jedno puste pole wewn¹trz ci¹gu o d³ugoœci K
+	// - puste pole b¹dŸ dwa na koñcu ci¹gu o d³ugoœci K - 1
+	// Maksymalnie mo¿emy stworzyæ 8 zagro¿eñ ? stawiaj¹c piona w œrodku:
+	// ?  ?  ?
+	//  x x x
+	//   xxx
+	// ?xx xx?
+	//   xxx
+	//  x x x
+	// ?  ?  ?
+	// Jednak wystarczy zaznaczyæ pierwsze zagro¿enie.
+	// Jeœli wystepuj¹ dwa mo¿na oznaczyæ stan jako wygrany.
+	// Jeœli doszliœmy do stanu 
+	// Jeœli wygenerowaliœmy takie zagro¿enia to zaznaczamy te pola
+	// W kolejnym generator wygeneruje mo¿liwe posuniêcia jedynie dla zagro¿onych pól
 	int nextInRow;
 	int foundInRow;
 	int foundedThreats = 0;
@@ -173,6 +201,8 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i - nextInRow][j] == (int)Player::undefined)
 			{
+				externalFirstThreatIndex.x = i - nextInRow;
+				externalFirstThreatIndex.y = j;
 				foundedThreats++;
 			}
 			break;

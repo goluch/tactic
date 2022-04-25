@@ -33,6 +33,7 @@ namespace gameEngines
     private:
 
         int emptyFieldsCount;
+        BoardIndex threatIndex;
         Player threat;
         vector<vector<char>> board;
         bool gameOver = false;
