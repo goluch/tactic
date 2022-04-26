@@ -1,17 +1,12 @@
 #pragma once
 #include <assert.h>
 #include <vector>
+#include "BoardIndex.h"
 #include "Player.h"
 #include "GameEngine.h"
 
 namespace gameEngines
 {
-    struct BoardIndex
-    {
-        int x;
-        int y;
-    };
-
     class NMKEngine
         : public GameEngine
     {

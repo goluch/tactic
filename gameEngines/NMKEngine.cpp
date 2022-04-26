@@ -207,24 +207,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i - nextInRow][j] == (int)Player::undefined)
 			{
-				threatIndex.x = i - nextInRow;
-				threatIndex.y = j;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
@@ -232,24 +232,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i + nextInRow][j] == (int)Player::undefined)
 			{
-				threatIndex.x = i + nextInRow;
-				threatIndex.y = j;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	if (foundInRow >= K && !foundEmptySpace)
 	{
@@ -257,7 +257,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	}
 	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (foundedPossibleThreats > 1)
+		if (foundedThreats > 0)
 		{
 			return true;
 		}
@@ -276,24 +276,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i][j - nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i;
-				threatIndex.y = j - nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i;
+				threatIndex.y = j - nextInRow;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
@@ -301,24 +301,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i][j + nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i;
-				threatIndex.y = j + nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i;
+				threatIndex.y = j + nextInRow;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	if (foundInRow >= K && !foundEmptySpace)
 	{
@@ -326,7 +326,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	}
 	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (foundedPossibleThreats > 1)
+		if (foundedThreats > 0)
 		{
 			return true;
 		}
@@ -345,24 +345,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i + nextInRow][j - nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i + nextInRow;
-				threatIndex.y = j - nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j - nextInRow;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	for (nextInRow = 1; nextInRow < K; nextInRow++)
 	{
@@ -370,24 +370,24 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i - nextInRow][j + nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i - nextInRow;
-				threatIndex.y = j + nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j + nextInRow;
 			}
 			else
 			{
 				break;
 			}
 		}
-		foundInRow++;
+		else
+		{
+			foundInRow++;
+		}
 	}
 	if (foundInRow >= K && !foundEmptySpace)
 	{
@@ -395,7 +395,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	}
 	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (foundedPossibleThreats > 1)
+		if (foundedThreats > 0)
 		{
 			return true;
 		}
@@ -414,17 +414,14 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i + nextInRow][j + nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i + nextInRow;
-				threatIndex.y = j + nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i + nextInRow;
+				threatIndex.y = j + nextInRow;
 			}
 			else
 			{
@@ -439,17 +436,14 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 		{
 			if (possibleMoves->board[i - nextInRow][j - nextInRow] == (int)Player::undefined)
 			{
-				threatIndex.x = i - nextInRow;
-				threatIndex.y = j - nextInRow;
-				foundedThreats++;
 				if (foundEmptySpace)
 				{
 					break;
 				}
-				else
-				{
-					foundEmptySpace = true;
-				}
+				foundEmptySpace = true;
+				foundedPossibleThreats++;
+				threatIndex.x = i - nextInRow;
+				threatIndex.y = j - nextInRow;
 			}
 			else
 			{
@@ -464,7 +458,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	}
 	if (foundInRow >= K - 1 && foundedPossibleThreats > 0)
 	{
-		if (foundedPossibleThreats > 1)
+		if (foundedThreats > 0)
 		{
 			return true;
 		}
@@ -505,6 +499,16 @@ void NMKEngine::SetGameState(std::string newGameState)
 			ss >> value;
 			board[i][j] = value;
 
+			if (!value)
+			{
+				this->emptyFieldsCount++;
+			}
+		}
+	}
+	for (int i = 1; i < N + border; i++)
+	{
+		for (int j = 1; j < M + border; j++)
+		{
 			if (value)
 			{
 				if (Check_K_InRow(this, i, j, (Player)value))
@@ -516,10 +520,6 @@ void NMKEngine::SetGameState(std::string newGameState)
 					this->gameOver = true;
 					this->winner = (Player)value;
 				}
-			}
-			else
-			{
-				this->emptyFieldsCount++;
 			}
 		}
 	}
