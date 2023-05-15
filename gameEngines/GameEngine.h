@@ -12,6 +12,14 @@ namespace gameEngines
 
     class GameEngine
     {
+
+    protected:
+        
+        /// <summary>
+        /// The answer to the question - whether the game is over?
+        /// </summary>
+        bool gameOver = false;
+
     public:
         /// <summary>
         /// Returns true if the game is over, otherwise returns false

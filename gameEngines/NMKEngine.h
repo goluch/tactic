@@ -36,7 +36,6 @@ namespace gameEngines
         BoardIndex threatIndex;
         int foundedThreats;
         vector<vector<char>> board;
-        bool gameOver = false;
         Player winner;
 
         bool Check_K_InRow(NMKEngine*, int, int, Player);

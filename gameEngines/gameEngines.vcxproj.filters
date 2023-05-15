@@ -33,6 +33,9 @@
     <ClInclude Include="BoardIndex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GIPFEngine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureGoEngine.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GIPFEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
