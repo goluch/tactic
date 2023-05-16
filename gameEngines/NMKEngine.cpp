@@ -38,10 +38,6 @@ NMKEngine::~NMKEngine()
 	board.clear();
 }
 
-bool NMKEngine::IsGameOver() {
-	return this->gameOver;
-}
-
 int NMKEngine::Evaluate(Player activePlayer) {
 	if (this->gameOver)
 	{

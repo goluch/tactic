@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureGoEngine.cpp" />
-    <ClCompile Include="GIPFEngine.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="NMKEngine.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>

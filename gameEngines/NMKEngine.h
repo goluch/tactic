@@ -12,6 +12,7 @@ namespace gameEngines
     {
     public:
 
+        //zmieniæ na zmienne szablonowe
         static int N;
         static int M;
         static int K;
@@ -24,7 +25,6 @@ namespace gameEngines
         //NMKEngine(NMKEngine&);
         ~NMKEngine();
 
-        virtual bool IsGameOver();
         virtual int Evaluate(Player);
         virtual GameEngine* GeneratePossibleMoves(int&, Player);
         virtual string GetGameState();

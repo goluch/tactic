@@ -3,7 +3,7 @@
 #include <iostream>
 #include "CppUnitTest.h"
 #include "NMKEngine.h"
-#include <Player.h>
+#include "Player.h"
 
 #define UNIT_TEST
 
@@ -13,40 +13,9 @@ using namespace gameEngines;
 namespace UnitTestGameEngines
 {
 
-
-	TEST_CLASS(UnitTestGameEngines)
+	TEST_CLASS(UnitTestNMKEngine)
 	{
 	public:
-
-		TEST_METHOD(TestNewPlayerShouldBeFirst)
-		{
-			Player player = Player::first;
-			Assert::AreEqual((int)Player::first, (int)player);
-		};
-
-		TEST_METHOD(TestIncrementedFirstPlayerShouldBeSecond)
-		{
-			Player player = Player::first;
-			player++;
-			Assert::AreEqual((int)Player::second, (int)player);
-		};
-
-		TEST_METHOD(TestIncrementedTwiceFirstPlayerShouldBeFirst)
-		{
-			Player player = Player::first;
-			player++;
-			player++;
-			Assert::AreEqual((int)Player::first, (int)player);
-		};
-
-		TEST_METHOD(TestIncrementedThreeTimesFirstPlayerShouldBeSecond)
-		{
-			Player player = Player::first;
-			player++;
-			player++;
-			player++;
-			Assert::AreEqual((int)Player::second, (int)player);
-		};
 
 		// private members should not be tested !!!
 		
