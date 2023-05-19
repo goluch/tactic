@@ -19,6 +19,7 @@ namespace gameEngines
         /// The answer to the question - whether the game is over?
         /// </summary>
         bool gameOver = false;
+        Player winner;
 
     public:
         /// <summary>
@@ -49,7 +50,7 @@ namespace gameEngines
         /// Sets the game state from a given string
         /// </summary>
         /// <param name="gameState">String coding the state of the game</param>
-        virtual void SetGameState(std::string gameState) = 0;
+        virtual void SetGameState(std::string newGameState) = 0;
     };
 
 }

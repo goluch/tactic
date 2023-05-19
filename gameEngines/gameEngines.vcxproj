@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CaptureGoEngine.h" />
+    <ClInclude Include="GameEngineExceptions.h" />
     <ClInclude Include="GameEngine.h" />
     <ClInclude Include="BoardIndex.h" />
     <ClInclude Include="GIPFEngine.h" />
@@ -148,6 +149,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CaptureGoEngine.cpp" />
+    <ClCompile Include="GameEngineExceptions.cpp" />
     <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="NMKEngine.cpp" />
     <ClCompile Include="Player.cpp" />

@@ -77,9 +77,9 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 				this->emptyFieldsCount = 1;
 				NMKEngine* possibleMoves = new NMKEngine[this->emptyFieldsCount];
 				// copy whole board
-				for (int i = 1; i < N + border; i++)
+				for (int i = border; i < N + border; i++)
 				{
-					for (int j = 1; j < M + border; j++)
+					for (int j = border; j < M + border; j++)
 					{
 						possibleMoves[0].board[i][j] = this->board[i][j];
 					}
@@ -92,18 +92,18 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 		for (int k = 0; k < this->emptyFieldsCount; k++)
 		{
 			// copy whole board
-			for (int i = 1; i < N + border; i++)
+			for (int i = border; i < N + border; i++)
 			{
-				for (int j = 1; j < M + border; j++)
+				for (int j = border; j < M + border; j++)
 				{
 					possibleMoves[k].board[i][j] = this->board[i][j];
 				}
 			}
 		}
 		int actualPossibleMoveIndex = 0;
-		for (int i = 1; i < N + border; i++)
+		for (int i = border; i < N + border; i++)
 		{
-			for (int j = 1; j < M + border; j++)
+			for (int j = border; j < M + border; j++)
 			{
 				// for all possible moves (empty fields)
 				if (this->board[i][j] == 0)
@@ -121,9 +121,9 @@ GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player ac
 							possibleMoves[0].winner = activePlayer;
 							possibleMoves[0].emptyFieldsCount = possibleMoves[actualPossibleMoveIndex].emptyFieldsCount;
 							// copy whole board
-							for (int i = 1; i < N + border * 2; i++)
+							for (int i = border; i < N + border * 2; i++)
 							{
-								for (int j = 1; j < M + border * 2; j++)
+								for (int j = border; j < M + border * 2; j++)
 								{
 									possibleMoves[0].board[i][j] = possibleMoves[actualPossibleMoveIndex].board[i][j];
 								}
@@ -471,9 +471,9 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 std::string NMKEngine::GetGameState()
 {
 	stringstream ss;
-	for (int i = 1; i < N + border; i++)
+	for (int i = border; i < N + border; i++)
 	{
-		for (int j = 1; j < M + border; j++)
+		for (int j = border; j < M + border; j++)
 		{
 			ss << (j == 1 ? "" : " ") << (int)board[i][j];
 		}
@@ -488,9 +488,9 @@ void NMKEngine::SetGameState(std::string newGameState)
 	int value;
 	this->emptyFieldsCount = 0;
 	this->winner = Player::undefined;
-	for (int i = 1; i < N + border; i++)
+	for (int i = border; i < N + border; i++)
 	{
-		for (int j = 1; j < M + border; j++)
+		for (int j = border; j < M + border; j++)
 		{
 			ss >> value;
 			board[i][j] = value;
@@ -501,9 +501,9 @@ void NMKEngine::SetGameState(std::string newGameState)
 			}
 		}
 	}
-	for (int i = 1; i < N + border; i++)
+	for (int i = border; i < N + border; i++)
 	{
-		for (int j = 1; j < M + border; j++)
+		for (int j = border; j < M + border; j++)
 		{
 			if (value)
 			{
