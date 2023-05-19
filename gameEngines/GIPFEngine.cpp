@@ -34,39 +34,38 @@ string GIPFEngine::GetGameState()
 	return NULL;
 }
 
-void GIPFEngine::SetGameState(string newGameState)
-{
-	std::stringstream ss(newGameState);
 
+void GIPFEngine::SetGameState(istream& newGameState)
+{
 	this->winner = Player::undefined;
 	{
 		int x;
-		ss >> x;
+		newGameState >> x;
 		if (x != s)
 		{
 			throw WrongGameStateSettingsException();
 		};
-		ss >> x;
+		newGameState >> x;
 		if (x != k)
 		{
 			throw WrongGameStateSettingsException();
 		};
-		ss >> x;
+		newGameState >> x;
 		if (x != gw)
 		{
 			throw WrongGameStateSettingsException();
 		};
-		ss >> x;
+		newGameState >> x;
 		if (x != gb)
 		{
 			throw WrongGameStateSettingsException();
 		};
-		ss >> gw_res;
+		newGameState >> gw_res;
 		if (gw_res > gw)
 		{
 			throw WrongGameStateSettingsException();
 		};
-		ss >> gb_res;
+		newGameState >> gb_res;
 		if (gb_res > gb)
 		{
 			throw WrongGameStateSettingsException();
@@ -74,7 +73,7 @@ void GIPFEngine::SetGameState(string newGameState)
 	}
 	{
 		char x;
-		ss >> x;
+		newGameState >> x;
 		switch (x)
 		{
 			//zawsze zaczyna bia³y
@@ -104,11 +103,12 @@ void GIPFEngine::SetGameState(string newGameState)
 				board[i][j] = startField;
 				continue;
 			}
-			ss >> value;
+			newGameState >> value;
 			board[i][j] = value;
 		}
 	}
 }
+
 
 int GIPFEngine::CheckPawnsNumber()
 {

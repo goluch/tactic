@@ -17,8 +17,8 @@ namespace gameEngines
 
 		virtual int Evaluate(Player);
 		virtual GameEngine* GeneratePossibleMoves(int& count, Player activePlayer);
+		virtual void SetGameState(istream& newGameState);
 		virtual string GetGameState();
-		virtual void SetGameState(string newGameState);
 
 		int CheckPawnsNumber();
 

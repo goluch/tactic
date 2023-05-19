@@ -52,7 +52,7 @@ namespace UnitTestGameEngines
 			string emptyString = "";
 			Assert::ExpectException<WrongGameStateSettingsException>([&]()
 				{
-					eng->SetGameState(emptyString);
+					eng->SetGameState(stringstream(emptyString));
 				});
 			delete eng;
 		};
@@ -74,7 +74,7 @@ namespace UnitTestGameEngines
 				" _ _ _ _ _ _\n"
 				"  _ _ _ _ _\n"
 				"   W _ _ B";
-			eng->SetGameState(properString);
+			eng->SetGameState(stringstream(properString));
 			delete eng;
 		};
 
@@ -95,7 +95,7 @@ namespace UnitTestGameEngines
 				" _ _ _ _ _ _\n"
 				"  _ _ _ _ _\n"
 				"   W _ _ B";
-			eng->SetGameState(properString);
+			eng->SetGameState(stringstream(properString));
 			Assert::AreEqual(0, eng->CheckPawnsNumber());
 			delete eng;
 		};

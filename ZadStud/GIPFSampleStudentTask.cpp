@@ -27,17 +27,7 @@ int _tmain(int argc, _TCHAR* argv[])
 			int gb; //black pawns number
 			cin >> s >> k >> gw >> gb;
 			GIPFEngine* eng = new GIPFEngine(s, k, gw, gb);
-			string properString =
-				"4 4 15 15\n"
-				"12 12 W\n"
-				"   W _ _ B\n"
-				"  _ _ _ _ _\n"
-				" _ _ _ _ _ _\n"
-				"B _ _ _ _ _ W\n"
-				" _ _ _ _ _ _\n"
-				"  _ _ _ _ _\n"
-				"   W _ _ B";
-			eng->SetGameState(properString);
+			eng->SetGameState(cin);
 			//Assert::AreEqual(0, eng->CheckPawnsNumber());
 			delete eng;
         }

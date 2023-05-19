@@ -28,7 +28,7 @@ namespace gameEngines
         virtual int Evaluate(Player);
         virtual GameEngine* GeneratePossibleMoves(int&, Player);
         virtual string GetGameState();
-        virtual void SetGameState(string);
+        virtual void SetGameState(istream&);
 
     private:
 

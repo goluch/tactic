@@ -482,9 +482,8 @@ std::string NMKEngine::GetGameState()
 	return ss.str();
 }
 
-void NMKEngine::SetGameState(std::string newGameState)
+void NMKEngine::SetGameState(std::istream& ss)
 {
-	std::stringstream ss(newGameState);
 	int value;
 	this->emptyFieldsCount = 0;
 	this->winner = Player::undefined;

@@ -50,7 +50,7 @@ namespace gameEngines
         /// Sets the game state from a given string
         /// </summary>
         /// <param name="gameState">String coding the state of the game</param>
-        virtual void SetGameState(std::string newGameState) = 0;
+        virtual void SetGameState(istream& newGameState) = 0;
     };
 
 }
