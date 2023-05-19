@@ -1,6 +1,4 @@
-﻿#pragma once
-// GameSolverEfficiencyTests.cpp : Defines the entry point for the console application.
-//
+﻿//NMKEngine sample student task
 
 #include <stdio.h>
 #include <tchar.h>
@@ -12,7 +10,7 @@ using namespace std;
 using namespace gameEngines;
 using namespace gameSolver;
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmainNOT_ACTIVE(int argc, _TCHAR* argv[])
 {
 
 

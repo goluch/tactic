@@ -18,7 +18,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="GameSolverEfficiencyTests.cpp">
+    <ClCompile Include="NMKGameSolverEfficiencyTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

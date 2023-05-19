@@ -140,7 +140,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ZadStud.cpp" />
+    <ClCompile Include="GIPFSampleStudentTask.cpp" />
+    <ClCompile Include="NMKSampleStudentTask.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gameEngines\gameEngines.vcxproj">
@@ -149,6 +150,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="out.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests_GIPF\1.in" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

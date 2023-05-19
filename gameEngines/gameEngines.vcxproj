@@ -151,6 +151,7 @@
     <ClCompile Include="CaptureGoEngine.cpp" />
     <ClCompile Include="GameEngineExceptions.cpp" />
     <ClCompile Include="GameEngine.cpp" />
+    <ClCompile Include="GIPFEngine.cpp" />
     <ClCompile Include="NMKEngine.cpp" />
     <ClCompile Include="Player.cpp" />
   </ItemGroup>

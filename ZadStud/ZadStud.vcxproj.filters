@@ -13,9 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Pliki zasobów\tests_GIPF">
+      <UniqueIdentifier>{0e8a7abf-7cff-4214-986b-b08102969d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ZadStud.cpp">
+    <ClCompile Include="NMKSampleStudentTask.cpp">
+      <Filter>Pliki źródłowe</Filter>
+    </ClCompile>
+    <ClCompile Include="GIPFSampleStudentTask.cpp">
       <Filter>Pliki źródłowe</Filter>
     </ClCompile>
   </ItemGroup>
@@ -23,5 +29,10 @@
     <Text Include="out.txt">
       <Filter>Pliki zasobów</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tests_GIPF\1.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
   </ItemGroup>
 </Project>

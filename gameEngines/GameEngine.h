@@ -27,7 +27,7 @@ namespace gameEngines
         /// </summary>
         /// <returns>Answer the question: if the game is over? True if yes, false if no.</returns>
         //virtual bool IsGameOver() = 0;
-        virtual bool GameEngine::IsGameOver();
+        virtual bool IsGameOver();
         /// <summary>
         /// Evaluation of the game state from the player's point of view
         /// </summary>

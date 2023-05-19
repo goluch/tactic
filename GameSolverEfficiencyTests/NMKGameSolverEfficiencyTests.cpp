@@ -1,7 +1,4 @@
 #pragma once
-// GameSolverEfficiencyTests.cpp : Defines the entry point for the console application.
-//
-
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
@@ -17,7 +14,7 @@ using namespace std;
 //using namespace gameDataStructures;
 using namespace gameEngines;
 
-int _tmain(int argc, _TCHAR* argv[])
+int _tmainNOT_ACTIVE(int argc, _TCHAR* argv[])
 {
 
 	// Przyk³adowy test silnika gry - do skasowania

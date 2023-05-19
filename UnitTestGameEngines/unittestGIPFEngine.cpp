@@ -23,7 +23,7 @@ namespace UnitTestGameEngines
 			const int k = 4; //k-in-row
 			const int gw = 4; //white pawns number
 			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine<s, k, gw, gb>();
+			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
 			bool res = eng->IsGameOver();
 			Assert::IsFalse(res);
 			delete eng;
@@ -35,7 +35,7 @@ namespace UnitTestGameEngines
 			const int k = 4; //k-in-row
 			const int gw = 4; //white pawns number
 			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine<s, k, gw, gb>();
+			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
 			int cnt;
 			GameEngine* res = eng->GeneratePossibleMoves(cnt, Player::first);
 			Assert::IsNotNull(res);
@@ -48,7 +48,7 @@ namespace UnitTestGameEngines
 			const int k = 4; //k-in-row
 			const int gw = 4; //white pawns number
 			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine<s, k, gw, gb>();
+			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
 			string emptyString = "";
 			Assert::ExpectException<WrongGameStateSettingsException>([&]()
 				{
@@ -63,7 +63,7 @@ namespace UnitTestGameEngines
 			const int k = 4; //k-in-row
 			const int gw = 15; //white pawns number
 			const int gb = 15; //black pawns number
-			GameEngine* eng = new GIPFEngine<s, k, gw, gb>();
+			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
 			string properString =
 				"4 4 15 15\n"
 				"12 12 W\n"
@@ -84,7 +84,7 @@ namespace UnitTestGameEngines
 			const int k = 4; //k-in-row
 			const int gw = 15; //white pawns number
 			const int gb = 15; //black pawns number
-			GIPFEngine<s, k, gw, gb>* eng = new GIPFEngine<s, k, gw, gb>();
+			GIPFEngine* eng = new GIPFEngine(s, k, gw, gb);
 			string properString =
 				"4 4 15 15\n"
 				"12 12 W\n"
