@@ -34,7 +34,7 @@ int _tmain(int argc, _TCHAR* argv[])
             }*/
             if (res == "OK")
             {
-                cout << eng->CheckPawnsNumber();
+                cout << eng->CheckPawnsNumber() << endl;
             }
             else
             {
@@ -44,7 +44,13 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         if (command == "PRINT_GAME_BOARD")
         {
-            cout << eng->GetGameState();
+            cout << eng->GetGameState() << endl;
+        }
+        if (command == "DO_MOVE")
+        {
+            string move;
+            cin >> move;
+            cout << eng->DoMove(move) << endl;
         }
     }
     delete eng;

@@ -31,7 +31,6 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.in" />
     <None Include="tests_GIPF\test.in">
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>

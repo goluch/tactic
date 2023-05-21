@@ -21,6 +21,8 @@ namespace gameEngines
 		virtual string GetGameState();
 
 		string CheckPawnsNumber();
+		string DoMove(string move);
+		pair<int, int> convertCoordinates(string coordinates);
 
     private:
 

@@ -113,7 +113,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>../gameSolver;../gameEngines</AdditionalIncludeDirectories>
@@ -152,7 +152,6 @@
     <Text Include="out.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.in" />
     <None Include="tests_GIPF\1.in" />
     <None Include="tests_GIPF\1.out" />
     <None Include="tests_GIPF\2.in" />

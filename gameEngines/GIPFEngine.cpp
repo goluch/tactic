@@ -1,3 +1,4 @@
+#include <utility>
 #include "GIPFEngine.h"
 
 using namespace gameEngines;
@@ -31,7 +32,7 @@ string GIPFEngine::GetGameState()
 	ss << this->gb_res << " " << this->gw_res << " " << (activePlayer == Player::first ? 'W' : 'B') << endl;
 	for (int i = 1; i < diag - 1; i++)
 	{
-		int spacesPrefix = (i > s) ? s - i : s - i;
+		int spacesPrefix = s - i;
 		while (spacesPrefix-- > 0)
 		{
 			ss << ' ';
@@ -63,6 +64,33 @@ string GIPFEngine::GetGameState()
 	return ss.str();
 }
 
+pair<int, int> GIPFEngine::convertCoordinates(string coordinates)
+{
+	int x1 = static_cast<int>(coordinates[0]) - static_cast<int>('a');
+	int x2 = static_cast<int>(coordinates[1]) - static_cast<int>('1');
+	if (x1 < s)
+	{
+		x2+= (s - x1);
+	}
+	else
+	{
+		x2 = diag + x2;
+	}
+	return pair<int, int>(x1, x2);
+}
+
+string GIPFEngine::DoMove(string move)
+{
+	pair<int, int> sour = convertCoordinates(move.substr(0, 2));
+	pair<int, int> dest = convertCoordinates(move.substr(3));
+
+	if (this->board[sour.first][sour.second] != '+')
+	{
+		return "BAD_MOVE " + move.substr(0, 2) + " IS WRONG START POSITION";
+	}
+
+	return "MOVE_COMMITTED";
+}
 
 string GIPFEngine::SetGameState(istream& newGameState)
 {
