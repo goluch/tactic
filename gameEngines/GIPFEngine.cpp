@@ -8,13 +8,8 @@ const char GIPFEngine::startField = '+';
 const char GIPFEngine::emptyField = '_';
 const char GIPFEngine::forbiddenField = '!';
 
-GIPFEngine::GIPFEngine(int s, int k, int gw, int gb)
-{
-	this->s = s;
-	this->k = k;
-	this->gw = gw;
-	this->gb = gb;
-}
+GIPFEngine::GIPFEngine()
+{ }
 
 GIPFEngine::~GIPFEngine()
 { }
@@ -31,68 +26,113 @@ GameEngine* GIPFEngine::GeneratePossibleMoves(int& count, Player activePlayer)
 
 string GIPFEngine::GetGameState()
 {
-	return NULL;
+	stringstream ss;
+	ss << this->s << " " << this->k << " " << this->gw << " " << this->gb << endl;
+	ss << this->gb_res << " " << this->gw_res << " " << (activePlayer == Player::first ? 'W' : 'B') << endl;
+	for (int i = 1; i < diag - 1; i++)
+	{
+		int spacesPrefix = (i > s) ? s - i : s - i;
+		while (spacesPrefix-- > 0)
+		{
+			ss << ' ';
+		}
+		for (int j = 0; j < diag; j++)
+		{
+			if (j > 1)
+			{
+				ss << " ";
+			}
+			switch (board[i][j])
+			{
+			case 'W':
+				ss << 'W';
+				break;
+			case 'B':
+				ss << 'B';
+				break;
+			case '_':
+				ss << '_';
+				break;
+			case '+':
+				break;
+			}
+
+		}
+		ss << endl;
+	}
+	return ss.str();
 }
 
 
-void GIPFEngine::SetGameState(istream& newGameState)
+string GIPFEngine::SetGameState(istream& newGameState)
 {
+	board.clear();
 	this->winner = Player::undefined;
+	newGameState >> s >> k >> gw >> gb;
+	newGameState >> gw_res;
+	if (gw_res > gw)
 	{
-		int x;
-		newGameState >> x;
-		if (x != s)
-		{
-			throw WrongGameStateSettingsException();
-		};
-		newGameState >> x;
-		if (x != k)
-		{
-			throw WrongGameStateSettingsException();
-		};
-		newGameState >> x;
-		if (x != gw)
-		{
-			throw WrongGameStateSettingsException();
-		};
-		newGameState >> x;
-		if (x != gb)
-		{
-			throw WrongGameStateSettingsException();
-		};
-		newGameState >> gw_res;
-		if (gw_res > gw)
-		{
-			throw WrongGameStateSettingsException();
-		};
-		newGameState >> gb_res;
-		if (gb_res > gb)
-		{
-			throw WrongGameStateSettingsException();
-		};
-	}
+		//throw WrongGameStateSettingsException("WRONG_WHITE_PAWNS_NUMBER");
+		board.clear();
+		return "WRONG_WHITE_PAWNS_NUMBER";
+	};
+	newGameState >> gb_res;
+	if (gb_res > gb)
 	{
-		char x;
-		newGameState >> x;
-		switch (x)
-		{
-			//zawsze zaczyna bia³y
-		case firstPlayerField:
-			activePlayer = Player::first;
-			break;
-		case secondPlayerField:
-			activePlayer = Player::second;
-			break;
-		default:
-			throw WrongGameStateSettingsException();
-		}
+		//throw WrongGameStateSettingsException("WRONG_BLACK_PAWNS_NUMBER");
+		board.clear();
+		return "WRONG_BLACK_PAWNS_NUMBER";
+	};
+	newGameState >> value;
+	switch (value)
+	{
+		//zawsze zaczyna bia³y
+	case firstPlayerField:
+		activePlayer = Player::first;
+		break;
+	case secondPlayerField:
+		activePlayer = Player::second;
+		break;
+	default:
+		//throw WrongGameStateSettingsException("UNKNOWN_ACTIVE_PLAYER");
+		board.clear();
+		return "UNKNOWN_ACTIVE_PLAYER";
 	}
 	diag = s * 2 - 1 + border * 2;
 	this->board.resize(diag, vector<char>(diag));
+	while (cin.peek() == '\n')
+	{
+		cin.get(value);
+	}
 	for (int i = 0; i < diag; i++)
 	{
 		for (int j = 0; j < diag; j++)
 		{
+			if (cin.peek() == '\n')
+			{
+				cin.get(value);
+				if (i > 0 && i < diag - 1)
+				{
+					if (i + s < diag - 1)
+					{
+						if (j != i + s)
+						{
+							//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
+							board.clear();
+							return "WRONG_BOARD_ROW_LENGTH";
+						}
+					}
+					else
+					{
+						if (j != diag - 1)
+						{
+							//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
+							board.clear();
+							return "WRONG_BOARD_ROW_LENGTH";
+						}
+					}
+				}
+			}
 			if (j > s + i || i > s + j)
 			{
 				board[i][j] = forbiddenField;
@@ -107,10 +147,17 @@ void GIPFEngine::SetGameState(istream& newGameState)
 			board[i][j] = value;
 		}
 	}
+	if (value != '\n')
+	{
+		//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
+		board.clear();
+		return "WRONG_BOARD_ROW_LENGTH";
+	}
+	return "OK";
 }
 
 
-int GIPFEngine::CheckPawnsNumber()
+string GIPFEngine::CheckPawnsNumber()
 {
 	int countedGWFields = 0;
 	int countedGBFields = 0;
@@ -144,14 +191,10 @@ int GIPFEngine::CheckPawnsNumber()
 			}
 		}
 	}
-	const int OK = 0;
-	const int whitepawnsbadNumber = 1;
-	const int blackapawnsbadNumber = 2;
-	const int startFieldsbadNumber = 4;
-	if (countedGWFields + gw_res != gw) return whitepawnsbadNumber;
-	if (countedGBFields + gb_res != gb) return blackapawnsbadNumber;
-	if (countedStartFields != s * 6) return startFieldsbadNumber;
+	if (countedGWFields + gw_res != gw) return "WRONG_WHITE_PAWNS_NUMBER";
+	if (countedGBFields + gb_res != gb) return "WRONG_BLACK_PAWNS_NUMBER";
+	if (countedStartFields != s * 6) return "WRONG_START_PAWNS_NUMBER";;
 	//if (countedEmptyFields != ???) return false;
 	//if (countedForbiddenFields != ? ? ? ) return false;
-	return OK;
+	return "BOARD_STATE_OK";
 }

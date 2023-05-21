@@ -19,11 +19,7 @@ namespace UnitTestGameEngines
 
 		TEST_METHOD(TestIsGameOverMethodOfNewGIPFEngineShouldReturnFalse)
 		{
-			const int s = 4; //board size
-			const int k = 4; //k-in-row
-			const int gw = 4; //white pawns number
-			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
+			GIPFEngine* eng = new GIPFEngine();
 			bool res = eng->IsGameOver();
 			Assert::IsFalse(res);
 			delete eng;
@@ -31,11 +27,7 @@ namespace UnitTestGameEngines
 
 		TEST_METHOD(TestGeneratePossibleMovesMethodOfNewGIPFEngineShouldReturnNotNull)
 		{
-			const int s = 4; //board size
-			const int k = 4; //k-in-row
-			const int gw = 4; //white pawns number
-			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
+			GIPFEngine* eng = new GIPFEngine();
 			int cnt;
 			GameEngine* res = eng->GeneratePossibleMoves(cnt, Player::first);
 			Assert::IsNotNull(res);
@@ -44,11 +36,7 @@ namespace UnitTestGameEngines
 
 		TEST_METHOD(TestSetGameStateMethod_Empty_String_Should_Throw_Exception)
 		{
-			const int s = 4; //board size
-			const int k = 4; //k-in-row
-			const int gw = 4; //white pawns number
-			const int gb = 4; //black pawns number
-			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
+			GIPFEngine* eng = new GIPFEngine();
 			string emptyString = "";
 			Assert::ExpectException<WrongGameStateSettingsException>([&]()
 				{
@@ -59,11 +47,7 @@ namespace UnitTestGameEngines
 
 		TEST_METHOD(TestSetGameStateMethod_Proper_String_Should_Not_Throw_Exception)
 		{
-			const int s = 4; //board size
-			const int k = 4; //k-in-row
-			const int gw = 15; //white pawns number
-			const int gb = 15; //black pawns number
-			GameEngine* eng = new GIPFEngine(s, k, gw, gb);
+			GIPFEngine* eng = new GIPFEngine();
 			string properString =
 				"4 4 15 15\n"
 				"12 12 W\n"
@@ -80,11 +64,7 @@ namespace UnitTestGameEngines
 
 		TEST_METHOD(TestCheckPawnsNumberMethod_Proper_Board_Returns_OK)
 		{
-			const int s = 4; //board size
-			const int k = 4; //k-in-row
-			const int gw = 15; //white pawns number
-			const int gb = 15; //black pawns number
-			GIPFEngine* eng = new GIPFEngine(s, k, gw, gb);
+			GIPFEngine* eng = new GIPFEngine();
 			string properString =
 				"4 4 15 15\n"
 				"12 12 W\n"
@@ -96,7 +76,7 @@ namespace UnitTestGameEngines
 				"  _ _ _ _ _\n"
 				"   W _ _ B";
 			eng->SetGameState(stringstream(properString));
-			Assert::AreEqual(0, eng->CheckPawnsNumber());
+			Assert::AreEqual("BOARD_STATE_OK", eng->CheckPawnsNumber().c_str());
 			delete eng;
 		};
 

@@ -12,15 +12,15 @@ namespace gameEngines
     {
     public:
 
-		GIPFEngine(int s, int k, int gw, int gb);
+		GIPFEngine();
 		~GIPFEngine();
 
 		virtual int Evaluate(Player);
 		virtual GameEngine* GeneratePossibleMoves(int& count, Player activePlayer);
-		virtual void SetGameState(istream& newGameState);
+		virtual string SetGameState(istream& newGameState);
 		virtual string GetGameState();
 
-		int CheckPawnsNumber();
+		string CheckPawnsNumber();
 
     private:
 

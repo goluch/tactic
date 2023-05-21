@@ -468,7 +468,7 @@ bool NMKEngine::Check_K_InRow(NMKEngine* possibleMoves, int i, int j, Player act
 	return false;
 }
 
-std::string NMKEngine::GetGameState()
+string NMKEngine::GetGameState()
 {
 	stringstream ss;
 	for (int i = border; i < N + border; i++)
@@ -482,7 +482,7 @@ std::string NMKEngine::GetGameState()
 	return ss.str();
 }
 
-void NMKEngine::SetGameState(std::istream& ss)
+string NMKEngine::SetGameState(std::istream& ss)
 {
 	int value;
 	this->emptyFieldsCount = 0;

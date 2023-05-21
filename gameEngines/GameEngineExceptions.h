@@ -9,7 +9,10 @@ namespace gameEngines
 {
     class WrongGameStateSettingsException : public std::exception {
     public:
-        char* what();
+
+    public:
+        WrongGameStateSettingsException(const char* msg) : std::exception(msg) { };
+        //char* what();
     };
 }
 

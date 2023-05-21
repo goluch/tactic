@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <tchar.h>
 #include <iostream>
-#include "Minmax.h"
+//#include "Minmax.h"
 //#include "exceptions.h"
 #include "GIPFEngine.h"
 
@@ -17,19 +17,35 @@ using namespace gameEngines;
 int _tmain(int argc, _TCHAR* argv[])
 {
     string command;
+    GIPFEngine* eng = new GIPFEngine();
     while (cin >> command)
     {
         if (command == "LOAD_GAME_BOARD")
         {
-			int s; //board size
-			int k; //k-in-row
-			int gw; //white pawns number
-			int gb; //black pawns number
-			cin >> s >> k >> gw >> gb;
-			GIPFEngine* eng = new GIPFEngine(s, k, gw, gb);
-			eng->SetGameState(cin);
-			//Assert::AreEqual(0, eng->CheckPawnsNumber());
-			delete eng;
+            string res;
+            //try
+            {
+                res = eng->SetGameState(cin);
+            }
+            /*catch (WrongGameStateSettingsException e)
+            {
+                cout << e.what() << endl;
+                continue;
+            }*/
+            if (res == "OK")
+            {
+                cout << eng->CheckPawnsNumber();
+            }
+            else
+            {
+                cout << res;
+            }
+            cout << endl;
+        }
+        if (command == "PRINT_GAME_BOARD")
+        {
+            cout << eng->GetGameState();
         }
     }
+    delete eng;
 }

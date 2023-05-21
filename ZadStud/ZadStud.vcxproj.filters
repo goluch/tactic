@@ -31,7 +31,23 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
+    <None Include="test.in" />
+    <None Include="tests_GIPF\test.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\test.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
     <None Include="tests_GIPF\1.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\1.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\2.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\2.out">
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>
   </ItemGroup>

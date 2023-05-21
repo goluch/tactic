@@ -36,7 +36,7 @@ int _tmainNOT_ACTIVE(int argc, _TCHAR* argv[])
                 cin >> number;
                 gameState << number;
             }
-            nmkEng.SetGameState(stringstream(gameState.str()));
+            cout << nmkEng.SetGameState(stringstream(gameState.str()));
             int possibmeMovesCount;
             NMKEngine* possibmeMoves = (NMKEngine*)nmkEng.GeneratePossibleMoves(possibmeMovesCount, (Player)activePlayer);
             cout << possibmeMovesCount << endl;
@@ -66,7 +66,7 @@ int _tmainNOT_ACTIVE(int argc, _TCHAR* argv[])
                 cin >> number;
                 gameState << number;
             }
-            nmkEng.SetGameState(stringstream(gameState.str()));
+            cout << nmkEng.SetGameState(stringstream(gameState.str()));
             int possibmeMovesCount;
             NMKEngine* possibmeMoves = (NMKEngine*)nmkEng.GeneratePossibleMoves(possibmeMovesCount, (Player)activePlayer);
             cout << possibmeMovesCount << endl;
@@ -96,7 +96,7 @@ int _tmainNOT_ACTIVE(int argc, _TCHAR* argv[])
                 cin >> number;
                 gameState << number;
             }
-            nmkEng.SetGameState(stringstream(gameState.str()));
+            cout << nmkEng.SetGameState(stringstream(gameState.str()));
             MinmaxAlg<NMKEngine> minMaxAlg;
             minMaxAlg.cutIfPossible = true;
             int result = minMaxAlg.Solve(nmkEng, (Player)activePlayer);
