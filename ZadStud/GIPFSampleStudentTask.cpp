@@ -3,7 +3,7 @@
 #include <tchar.h>
 #include <iostream>
 //#include "Minmax.h"
-//#include "exceptions.h"
+//#include "GameEngineExceptions.h"
 #include "GIPFEngine.h"
 
 //#define NODE PNSNode<CaptureGoEngine, unsigned int>
@@ -34,7 +34,7 @@ int _tmain(int argc, _TCHAR* argv[])
             }*/
             if (res == "OK")
             {
-                cout << eng->CheckPawnsNumber() << endl;
+                cout << eng->CheckPawnsNumber();
             }
             else
             {
@@ -44,7 +44,7 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         if (command == "PRINT_GAME_BOARD")
         {
-            cout << eng->GetGameState() << endl;
+            cout << eng->GetGameState();
         }
         if (command == "DO_MOVE")
         {
@@ -52,6 +52,7 @@ int _tmain(int argc, _TCHAR* argv[])
             cin >> move;
             cout << eng->DoMove(move) << endl;
         }
+        cout << endl;
     }
     delete eng;
 }

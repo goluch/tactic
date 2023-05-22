@@ -5,8 +5,6 @@
 #include "GameEngineExceptions.h"
 namespace gameEngines
 {
-
-
     class GIPFEngine
         : public GameEngine
     {
@@ -15,14 +13,19 @@ namespace gameEngines
 		GIPFEngine();
 		~GIPFEngine();
 
+		enum Direction
+		{
+			Unknown, E, S, SE, W, N, NW
+		};
+
+		typedef pair<int, int> Coord;
+
 		virtual int Evaluate(Player);
 		virtual GameEngine* GeneratePossibleMoves(int& count, Player activePlayer);
 		virtual string SetGameState(istream& newGameState);
 		virtual string GetGameState();
-
 		string CheckPawnsNumber();
 		string DoMove(string move);
-		pair<int, int> convertCoordinates(string coordinates);
 
     private:
 
@@ -46,6 +49,11 @@ namespace gameEngines
 		static const char emptyField;
 		static const char forbiddenField;
 
+		Direction SpecifyDirection(Coord sour, Coord dest);
+		Direction GetOppositeDirection(Direction moveDir);
+		Coord SpecifyNextFieldCoord(Coord sour, Direction moveDir);
+		Coord ConvertCoordinates(string Coordinates);
+		bool MoveWholeRow(Coord sour, Coord dest, Direction moveDir);
     };
 
 }

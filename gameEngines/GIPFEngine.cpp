@@ -1,5 +1,6 @@
 #include <utility>
 #include "GIPFEngine.h"
+#include "GameEngineExceptions.h"
 
 using namespace gameEngines;
 
@@ -29,7 +30,7 @@ string GIPFEngine::GetGameState()
 {
 	stringstream ss;
 	ss << this->s << " " << this->k << " " << this->gw << " " << this->gb << endl;
-	ss << this->gb_res << " " << this->gw_res << " " << (activePlayer == Player::first ? 'W' : 'B') << endl;
+	ss << this->gw_res << " " << this->gb_res << " " << (activePlayer == Player::first ? 'W' : 'B') << endl;
 	for (int i = 1; i < diag - 1; i++)
 	{
 		int spacesPrefix = s - i;
@@ -64,31 +65,181 @@ string GIPFEngine::GetGameState()
 	return ss.str();
 }
 
-pair<int, int> GIPFEngine::convertCoordinates(string coordinates)
+GIPFEngine::Coord GIPFEngine::ConvertCoordinates(string Coordinates)
 {
-	int x1 = static_cast<int>(coordinates[0]) - static_cast<int>('a');
-	int x2 = static_cast<int>(coordinates[1]) - static_cast<int>('1');
-	if (x1 < s)
+	int i = static_cast<int>(Coordinates[1]) - static_cast<int>('1');
+	int j = static_cast<int>(Coordinates[0]) - static_cast<int>('a');
+	i = diag - 1 - i;
+	if (j < s)
 	{
-		x2+= (s - x1);
+		i-= (s - j);
 	}
-	else
+	return Coord(i, j);
+}
+
+GIPFEngine::Direction GIPFEngine::SpecifyDirection(Coord sour, Coord dest)
+{
+	if (sour.second == dest.second)
 	{
-		x2 = diag + x2;
+		if (sour.first == dest.first - 1)
+		{
+			return N;
+		}
+		if (sour.first == dest.first + 1)
+		{
+			return S;
+		}
+		return Unknown;
 	}
-	return pair<int, int>(x1, x2);
+	if (sour.first == dest.first)
+	{
+		if (sour.second == dest.second - 1)
+		{
+			return E;
+		}
+		if (sour.second == dest.second + 1)
+		{
+			return W;
+		}
+		return Unknown;
+	}
+	if (sour.first == dest.first - 1 && sour.first == dest.first - 1)
+	{
+		return SE;
+	}
+	if (sour.first == dest.first + 1 && sour.first == dest.first + 1)
+	{
+		return NW;
+	}
+	return Unknown;
+}
+
+GIPFEngine::Direction GIPFEngine::GetOppositeDirection(Direction moveDir)
+{
+	switch (moveDir)
+	{
+	case E:
+		return W;
+	case S:
+		return N;
+	case SE:
+		return NW;
+	case W:
+		return E;
+	case N:
+		return S;
+	case NW:
+		return SE;
+	case Unknown:
+		return Unknown;
+	}
+	return Unknown;
+}
+
+GIPFEngine::Coord GIPFEngine::SpecifyNextFieldCoord(Coord sour, Direction moveDir)
+{
+	switch (moveDir)
+	{
+	case E:
+		sour.second++;
+		return sour;
+	case S:
+		sour.first--;
+		return sour;
+	case SE:
+		sour.first++;
+		sour.second++;
+		return sour;
+	case W:
+		sour.second--;
+		return sour;
+	case N:
+		sour.first++;
+		return sour;
+	case NW:
+		sour.first--;
+		sour.second--;
+		return sour;
+	}
+	return Coord(-1, -1);
+}
+
+bool GIPFEngine::MoveWholeRow(Coord sour, Coord dest, Direction moveDir)
+{
+	while (sour != dest)
+	{
+		Coord prev = SpecifyNextFieldCoord(dest, GetOppositeDirection(moveDir));
+		if (board[prev.first][prev.second] == '+')
+		{
+			board[dest.first][dest.second] = activePlayer == Player::first ? 'W' : 'B';
+			if (activePlayer == Player::first)
+			{
+				this->gw_res--;
+			}
+			else
+			{
+				this->gb_res--;
+			}
+			if (sour == prev)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		board[dest.first][dest.second] = board[prev.first][prev.second];
+		dest = prev;
+	}
+	//switch (moveDir)
+	//{
+	//case E:
+	//	break;
+	//case S:
+	//	break;
+	//case SE:
+	//	break;
+	//case W:
+	//	break;
+	//case N:
+	//	break;
+	//case NW:
+	//	break;
+	//}
+	return false;
 }
 
 string GIPFEngine::DoMove(string move)
 {
-	pair<int, int> sour = convertCoordinates(move.substr(0, 2));
-	pair<int, int> dest = convertCoordinates(move.substr(3));
-
+	Coord sour = ConvertCoordinates(move.substr(0, 2));
 	if (this->board[sour.first][sour.second] != '+')
 	{
-		return "BAD_MOVE " + move.substr(0, 2) + " IS WRONG START POSITION";
+		return "BAD_MOVE_" + move.substr(0, 2) + "_IS_WRONG_STARTING_FIELD";
 	}
-
+	Coord dest = ConvertCoordinates(move.substr(3));
+	Direction moveDir = SpecifyDirection(sour, dest);
+	while (this->board[dest.first][dest.second] != '_')
+	{
+		switch (this->board[dest.first][dest.second])
+		{
+		case 'W':
+			dest = SpecifyNextFieldCoord(dest, moveDir);
+			break;
+		case 'B':
+			dest = SpecifyNextFieldCoord(dest, moveDir);
+			break;
+		case '+':
+			return "BAD_MOVE_ROW_IS_FULL";
+		default:
+			throw WrongGameStateSettingsException("BAD_MOVE_UNKNOWWN_FIELD_STATE");
+		}
+	}
+	if (!MoveWholeRow(sour, dest, moveDir))
+	{
+		throw WrongGameStateSettingsException("UNABLE_TO_MOVE_WHOLE_ROW");
+	}
+	this->activePlayer++;
 	return "MOVE_COMMITTED";
 }
 
@@ -100,14 +251,12 @@ string GIPFEngine::SetGameState(istream& newGameState)
 	newGameState >> gw_res;
 	if (gw_res > gw)
 	{
-		//throw WrongGameStateSettingsException("WRONG_WHITE_PAWNS_NUMBER");
 		board.clear();
 		return "WRONG_WHITE_PAWNS_NUMBER";
 	};
 	newGameState >> gb_res;
 	if (gb_res > gb)
 	{
-		//throw WrongGameStateSettingsException("WRONG_BLACK_PAWNS_NUMBER");
 		board.clear();
 		return "WRONG_BLACK_PAWNS_NUMBER";
 	};
@@ -122,7 +271,6 @@ string GIPFEngine::SetGameState(istream& newGameState)
 		activePlayer = Player::second;
 		break;
 	default:
-		//throw WrongGameStateSettingsException("UNKNOWN_ACTIVE_PLAYER");
 		board.clear();
 		return "UNKNOWN_ACTIVE_PLAYER";
 	}
@@ -145,7 +293,6 @@ string GIPFEngine::SetGameState(istream& newGameState)
 					{
 						if (j != i + s)
 						{
-							//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
 							board.clear();
 							return "WRONG_BOARD_ROW_LENGTH";
 						}
@@ -154,7 +301,6 @@ string GIPFEngine::SetGameState(istream& newGameState)
 					{
 						if (j != diag - 1)
 						{
-							//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
 							board.clear();
 							return "WRONG_BOARD_ROW_LENGTH";
 						}
@@ -177,13 +323,11 @@ string GIPFEngine::SetGameState(istream& newGameState)
 	}
 	if (value != '\n')
 	{
-		//throw WrongGameStateSettingsException("WRONG_BOARD_ROW_LENGTH");
 		board.clear();
 		return "WRONG_BOARD_ROW_LENGTH";
 	}
 	return "OK";
 }
-
 
 string GIPFEngine::CheckPawnsNumber()
 {
