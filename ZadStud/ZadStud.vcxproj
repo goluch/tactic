@@ -149,13 +149,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="out.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="tests_GIPF\1.in" />
     <None Include="tests_GIPF\1.out" />
     <None Include="tests_GIPF\2.in" />
     <None Include="tests_GIPF\2.out" />
+    <None Include="tests_GIPF\3.in" />
+    <None Include="tests_GIPF\3.out" />
+    <None Include="tests_GIPF\4.in" />
+    <None Include="tests_GIPF\4.out" />
+    <None Include="tests_GIPF\5.in" />
+    <None Include="tests_GIPF\5.out" />
     <None Include="tests_GIPF\test.in" />
     <None Include="tests_GIPF\test.out" />
   </ItemGroup>

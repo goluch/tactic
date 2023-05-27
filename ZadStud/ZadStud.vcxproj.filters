@@ -26,11 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="out.txt">
-      <Filter>Pliki zasobów</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="tests_GIPF\test.in">
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>
@@ -47,6 +42,24 @@
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>
     <None Include="tests_GIPF\2.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\3.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\3.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\4.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\4.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\5.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\5.out">
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>
   </ItemGroup>

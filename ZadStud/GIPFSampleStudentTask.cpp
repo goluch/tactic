@@ -34,7 +34,23 @@ int _tmain(int argc, _TCHAR* argv[])
             }*/
             if (res == "OK")
             {
-                cout << eng->CheckPawnsNumber();
+                string checkPawnsNumRes = eng->CheckPawnsNumber();
+                if (checkPawnsNumRes == "BOARD_STATE_OK")
+                {
+                    int kInRowNum = eng->CheckKInRow();
+                    if (kInRowNum)
+                    {
+                        cout << "ERROR_FOUND_" << kInRowNum << "_ROW" << ((kInRowNum > 1) ? "S" : "") << "_OF_LENGTH_K";
+                    }
+                    else
+                    {
+                        cout << checkPawnsNumRes;
+                    }
+                }
+                else
+                {
+                    cout << checkPawnsNumRes;
+                }
             }
             else
             {
@@ -44,7 +60,7 @@ int _tmain(int argc, _TCHAR* argv[])
         }
         if (command == "PRINT_GAME_BOARD")
         {
-            cout << eng->GetGameState();
+            cout << eng->GetGameState() << endl;
         }
         if (command == "DO_MOVE")
         {
@@ -52,7 +68,6 @@ int _tmain(int argc, _TCHAR* argv[])
             cin >> move;
             cout << eng->DoMove(move) << endl;
         }
-        cout << endl;
     }
     delete eng;
 }
