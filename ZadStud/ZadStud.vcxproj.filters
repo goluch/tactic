@@ -62,5 +62,59 @@
     <None Include="tests_GIPF\5.out">
       <Filter>Pliki zasobów\tests_GIPF</Filter>
     </None>
+    <None Include="tests_GIPF\6.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\6.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\0.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\0.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\7.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\7.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\6a.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\6a.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\7a.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\7a.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\8.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\8.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\8a.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\8a.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\9.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\9.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\9a.in">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
+    <None Include="tests_GIPF\9a.out">
+      <Filter>Pliki zasobów\tests_GIPF</Filter>
+    </None>
   </ItemGroup>
 </Project>

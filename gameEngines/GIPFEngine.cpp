@@ -10,30 +10,155 @@ const char GIPFEngine::secondPlayerField = 'B';
 const char GIPFEngine::startField = '+';
 const char GIPFEngine::emptyField = '_';
 const char GIPFEngine::forbiddenField = '!';
+vector<pair<Coord, Coord>> GIPFEngine::allMoves;
+
+GIPFEngine& GIPFEngine::operator=(GIPFEngine g)
+{
+	ClearAndAssign(g);
+	return *this;
+}
+
+void GIPFEngine::ClearAndAssign(GIPFEngine const& g)
+{
+	ClearGameState();
+	this->activePlayer = g.activePlayer;
+	this->board = g.board;
+	this->collisionIndex = g.collisionIndex;
+	this->diag = g.diag;
+	this->s = g.s;
+	this->k = g.k;
+	this->gw = g.gw;
+	this->gw_res = g.gw_res;
+	this->gb = g.gb;
+	this->gb_res = g.gb_res;
+	this->emptyFieldsLeft = g.emptyFieldsLeft;
+	this->collisionInKInRowsNumber = g.collisionInKInRowsNumber;
+	this->kInRowsconflictingRows[0] = g.kInRowsconflictingRows[0];
+	this->kInRowsconflictingRows[1] = g.kInRowsconflictingRows[1];
+	this->kInRowsconflictingRows[2] = g.kInRowsconflictingRows[2];
+	this->gameOver = g.gameOver;
+	this->winner = g.winner;
+}
+
+bool GIPFEngine::operator==(GIPFEngine const& g)
+{
+	if (activePlayer != g.activePlayer) return false;
+	if (board != g.board) return false;
+	if (collisionIndex != g.collisionIndex) return false;
+	if (collisionInKInRowsNumber != g.collisionInKInRowsNumber) return false;
+	if (diag != g.diag) return false;
+	if (s != g.s) return false;
+	if (k != g.k) return false;
+	if (gw != g.gw) return false;
+	if (gw_res != g.gw_res) return false;
+	if (gb != g.gb) return false;
+	if (gb_res != g.gb_res) return false;
+	if (emptyFieldsLeft != g.emptyFieldsLeft) return false;
+	return true;
+}
+
+bool GIPFEngine::operator!=(GIPFEngine const& g)
+{
+	return !(*this == g);
+}
 
 GIPFEngine::GIPFEngine()
 {
 	ClearGameState();
 }
 
+GIPFEngine::GIPFEngine(GIPFEngine& g)
+{
+	ClearAndAssign(g);
+}
+
 GIPFEngine::~GIPFEngine()
 { }
 
-int GIPFEngine::Evaluate(Player)
-{
-	return 0;
-}
-
 GameEngine* GIPFEngine::GeneratePossibleMoves(int& count, Player activePlayer)
 {
-	return NULL;
+	GIPFEngine* newGameState = new GIPFEngine[this->allMoves.size()];
+	string result;
+	count = 0;
+	for (pair<Coord, Coord> possibleMove : this->allMoves)
+	{
+		newGameState[count] = *this;
+		int movesCount = 0;
+		result = newGameState[count].DoMoveWithoutRemovingRows(possibleMove.first, possibleMove.second);
+		if (result == "MOVE_COMMITTED")
+		{
+			if (newGameState[count].collisionInKInRowsNumber > 0)
+			{
+				int i = newGameState[count].collisionInKInRowsNumber;
+				while (i--)
+				{
+					newGameState[count + 1] = newGameState[count];
+					newGameState[count].RemoveKInRows(result, i);
+					if (cutIfGameOver && newGameState[count].IsGameOver())
+					{
+						//if (newGameState[count].Evaluate(newGameState[count].activePlayer) == -1)
+						{
+							count = 1;
+							newGameState[0] = newGameState[count];
+						}
+					}
+					int prevCount = count;
+					bool foundDuplicate = false;
+					while (prevCount--)
+					{
+						if (newGameState[prevCount] == newGameState[count])
+						{
+							foundDuplicate = true;
+							newGameState[count] = newGameState[count + 1];
+							break;
+						}
+					}
+					if (!foundDuplicate)
+					{
+						count++;
+					}
+				}
+			}
+			else
+			{
+				newGameState[count].RemoveKInRows(result);
+				if (cutIfGameOver && newGameState[count].IsGameOver())
+				{
+					//if (newGameState[count].Evaluate(newGameState[count].activePlayer) == -1)
+					{
+						count = 1;
+						newGameState[0] = newGameState[count];
+					}
+				}
+				int prevCount = count;
+				bool foundDuplicate = false;
+				while (prevCount--)
+				{
+					if (newGameState[prevCount] == newGameState[count])
+					{
+						foundDuplicate = true;
+						break;
+					}
+				}
+				if (!foundDuplicate)
+				{
+					count++;
+				}
+			}
+		}
+	}
+	return newGameState;
 }
 
 string GIPFEngine::GetGameState()
 {
+	if (board.size() == 0)
+	{
+		return "EMPTY_BOARD";
+	}
 	stringstream ss;
 	ss << this->s << " " << this->k << " " << this->gw << " " << this->gb << endl;
-	ss << this->gw_res << " " << this->gb_res << " " << (activePlayer == Player::first ? 'W' : 'B') << endl;
+	ss << this->gw_res << " " << this->gb_res << " " << (activePlayer == Player::first ? firstPlayerField : secondPlayerField) << endl;
 	for (int i = 1; i < diag - 1; i++)
 	{
 		int spacesPrefix = s - i;
@@ -49,16 +174,16 @@ string GIPFEngine::GetGameState()
 			}
 			switch (board[i][j])
 			{
-			case 'W':
-				ss << 'W';
+			case firstPlayerField:
+				ss << firstPlayerField;
 				break;
-			case 'B':
-				ss << 'B';
+			case secondPlayerField:
+				ss << secondPlayerField;
 				break;
-			case '_':
-				ss << '_';
+			case emptyField:
+				ss << emptyField;
 				break;
-			case '+':
+			case startField:
 				break;
 			}
 
@@ -172,9 +297,9 @@ bool GIPFEngine::MoveWholeRow(Coord sour, Coord dest, Direction moveDir)
 	while (sour != dest)
 	{
 		Coord prev = SpecifyNextFieldCoord(dest, GetOppositeDirection(moveDir));
-		if (board[prev.first][prev.second] == '+')
+		if (board[prev.first][prev.second] == startField)
 		{
-			board[dest.first][dest.second] = activePlayer == Player::first ? 'W' : 'B';
+			board[dest.first][dest.second] = activePlayer == Player::first ? firstPlayerField : secondPlayerField;
 			if (activePlayer == Player::first)
 			{
 				this->gw_res--;
@@ -198,6 +323,60 @@ bool GIPFEngine::MoveWholeRow(Coord sour, Coord dest, Direction moveDir)
 	return false;
 }
 
+string GIPFEngine::DoMoveWithoutRemovingRows(Coord sour, Coord dest)
+{
+	Direction moveDir = SpecifyDirection(sour, dest);
+	if (moveDir == Unknown)
+	{
+		return "UNKNOWN_MOVE_DIRECTION";
+	}
+	while (this->board[dest.first][dest.second] != emptyField)
+	{
+		switch (this->board[dest.first][dest.second])
+		{
+		case firstPlayerField:
+			dest = SpecifyNextFieldCoord(dest, moveDir);
+			break;
+		case secondPlayerField:
+			dest = SpecifyNextFieldCoord(dest, moveDir);
+			break;
+		case startField:
+			return "BAD_MOVE_ROW_IS_FULL";
+		default:
+			throw WrongGameStateSettingsException("BAD_MOVE_UNKNOWWN_FIELD_STATE");
+		}
+	}
+	if (!MoveWholeRow(sour, dest, moveDir))
+	{
+		throw WrongGameStateSettingsException("UNABLE_TO_MOVE_WHOLE_ROW");
+	}
+	int KInRowFoundNumber = CheckKInRow();
+	this->emptyFieldsLeft--;
+	this->activePlayer++;
+	return "MOVE_COMMITTED";
+}
+
+string GIPFEngine::DoMove(Coord sour, Coord dest)
+{
+	string res = DoMoveWithoutRemovingRows(sour, dest);
+	if (res == "MOVE_COMMITTED")
+	{
+		string removedInfo;
+		int removedRows = RemoveKInRows(removedInfo);
+		if (removedInfo != "")
+		{
+			return removedInfo;
+		}
+		emptyFieldsLeft--;
+		CheckForGameOver();
+		return "MOVE_COMMITTED";
+	}
+	else
+	{
+		return res;
+	}
+}
+
 string GIPFEngine::DoMove(string move)
 {
 	Coord sour = ConvertCoordinates(move.substr(0, 2));
@@ -215,45 +394,12 @@ string GIPFEngine::DoMove(string move)
 		return "BAD_MOVE_" + move.substr(3) + "_IS_WRONG_INDEX";
 	}
 	if (this->board[dest.first][dest.second] != '_' &&
-		this->board[dest.first][dest.second] != 'W' && 
+		this->board[dest.first][dest.second] != 'W' &&
 		this->board[dest.first][dest.second] != 'B')
 	{
 		return "BAD_MOVE_" + move.substr(3) + "_IS_WRONG_DESTINATION_FIELD";
 	}
-	Direction moveDir = SpecifyDirection(sour, dest);
-	if (moveDir == Unknown)
-	{
-		return "UNKNOWN_MOVE_DIRECTION";
-	}
-	while (this->board[dest.first][dest.second] != '_')
-	{
-		switch (this->board[dest.first][dest.second])
-		{
-		case 'W':
-			dest = SpecifyNextFieldCoord(dest, moveDir);
-			break;
-		case 'B':
-			dest = SpecifyNextFieldCoord(dest, moveDir);
-			break;
-		case '+':
-			return "BAD_MOVE_ROW_IS_FULL";
-		default:
-			throw WrongGameStateSettingsException("BAD_MOVE_UNKNOWWN_FIELD_STATE");
-		}
-	}
-	if (!MoveWholeRow(sour, dest, moveDir))
-	{
-		throw WrongGameStateSettingsException("UNABLE_TO_MOVE_WHOLE_ROW");
-	}
-	int KInRowFoundNumber = CheckKInRow();
-	string removedInfo;
-	int removedRows = RemoveKInRows(removedInfo);
-	if (removedInfo != "")
-	{
-		return removedInfo;
-	}
-	this->activePlayer++;
-	return "MOVE_COMMITTED";
+	return DoMove(sour, dest);
 }
 
 void GIPFEngine::ClearGameState()
@@ -264,6 +410,8 @@ void GIPFEngine::ClearGameState()
 	this->kInRowsconflictingRows[2] = NULL;
 	this->collisionInKInRowsNumber = 0;
 	this->winner = Player::undefined;
+	this->gameOver = false;
+	this->emptyFieldsLeft = 0;
 }
 
 string GIPFEngine::SetGameState(istream& newGameState)
@@ -285,7 +433,6 @@ string GIPFEngine::SetGameState(istream& newGameState)
 	newGameState >> value;
 	switch (value)
 	{
-		//zawsze zaczyna bia³y
 	case firstPlayerField:
 		activePlayer = Player::first;
 		break;
@@ -340,6 +487,10 @@ string GIPFEngine::SetGameState(istream& newGameState)
 				continue;
 			}
 			newGameState >> value;
+			if (value == emptyField)
+			{
+				emptyFieldsLeft++;
+			}
 			board[i][j] = value;
 		}
 	}
@@ -348,6 +499,8 @@ string GIPFEngine::SetGameState(istream& newGameState)
 		board.clear();
 		return "WRONG_BOARD_ROW_LENGTH";
 	}
+	ComputeAllMoves();
+	CheckForGameOver();
 	return "OK";
 }
 
@@ -403,8 +556,8 @@ string GIPFEngine::SetGameState(istream& newGameState)
 bool GIPFEngine::GetPawnColor(Coord fieldCoord, char& actualColor) {
 	switch (board[fieldCoord.first][fieldCoord.second])
 	{
-	case 'W':
-	case 'B':
+	case firstPlayerField:
+	case secondPlayerField:
 		actualColor = board[fieldCoord.first][fieldCoord.second];
 		return true;
 	default:
@@ -426,7 +579,7 @@ int GIPFEngine::AddToKInRowsAndFindCollision(KInRow possiblekInRowsIndexes)
 			this->kInRowsconflictingRows[0] = new KInRow(possiblekInRowsIndexes);
 			this->kInRowsconflictingRows[1] = new KInRow(*kInRow);
 			this->kInRowsIndexes.erase(kInRow);
-			this->collisionInKInRowsNumber++;
+			this->collisionInKInRowsNumber = 2;
 			return v_intersection.size();
 		}
 	}
@@ -437,6 +590,7 @@ int GIPFEngine::AddToKInRowsAndFindCollision(KInRow possiblekInRowsIndexes)
 		if (v_intersection.size())
 		{
 			this->kInRowsconflictingRows[2] = new KInRow(possiblekInRowsIndexes);
+			this->collisionInKInRowsNumber = 3;
 			return 0;
 		}
 	}
@@ -598,31 +752,29 @@ int GIPFEngine::CheckKInRow()
 	foundKInRows += CheckHorizontallyOrVertically(E, S);
 	foundKInRows += CheckHorizontallyOrVertically(S, E);
 	foundKInRows += CheckDiagonally(W, S, SE);
-	//if (foundKInRows != this->kInRowsIndexes.size() + this->collisionInKInRowsNumber * 2)
-	//{
-	//	throw WrongGameStateSettingsException("Wrong kInRowsIndexes size");
-	//}
 	return foundKInRows;
 }
 
 bool GIPFEngine::UpdatePlayersReserves(Coord tmpCoord, char kInRowColor)
 {
 	char fieldColor = this->board[tmpCoord.first][tmpCoord.second];
-	if (fieldColor == 'W' || fieldColor == 'B')
+	if (fieldColor == firstPlayerField || fieldColor == secondPlayerField)
 	{
-		this->board[tmpCoord.first][tmpCoord.second] = '_';
+		this->board[tmpCoord.first][tmpCoord.second] = emptyField;
 		switch (kInRowColor)
 		{
-		case 'W':
-			if (fieldColor == 'W')
+		case firstPlayerField:
+			if (fieldColor == firstPlayerField)
 			{
 				gw_res++;
+				emptyFieldsLeft++;
 			}
 			return true;
-		case 'B':
-			if (fieldColor == 'B')
+		case secondPlayerField:
+			if (fieldColor == secondPlayerField)
 			{
 				gb_res++;
+				emptyFieldsLeft++;
 			}
 			return true;
 		default:
@@ -659,87 +811,95 @@ bool GIPFEngine::RemoveKinRow(KInRow* kInRow)
 	return false;
 }
 
-int GIPFEngine::RemoveKInRows(string& errorInfo)
+int GIPFEngine::RemoveKInRows(string& errorInfo, int rowToRemove)
 {
 	// raczej istnienie wiêcej ni¿ jednej kolizjii nie jest mo¿liwe podczas normalnej gry wiêc mo¿na z czasem zamieniæ na bool.
 	int removedConflictingRowsCount = 0;
-	while (this->collisionInKInRowsNumber--)
+	if (rowToRemove == -1)
 	{
-		string removingPlayerColor;
-		cin >> removingPlayerColor;
-		switch (board[this->collisionIndex.first][this->collisionIndex.second])
+		if (this->collisionInKInRowsNumber)
 		{
-		case 'W':
-			if (removingPlayerColor.compare("b:") == 0)
+			string removingPlayerColor;
+			cin >> removingPlayerColor;
+			switch (board[this->collisionIndex.first][this->collisionIndex.second])
 			{
-				errorInfo = "WRONG_COLOR_OF_CHOSEN_ROW";
-				return 0;
+			case firstPlayerField:
+				if (removingPlayerColor.compare("b:") == 0)
+				{
+					errorInfo = "WRONG_COLOR_OF_CHOSEN_ROW";
+					return 0;
+				}
+				break;
+			case secondPlayerField:
+				if (removingPlayerColor.compare("w:") == 0)
+				{
+					errorInfo = "WRONG_COLOR_OF_CHOSEN_ROW";
+					return 0;
+				}
+				break;
+			default:
+				throw WrongGameStateSettingsException("UNKNOWN_COLOR_CHOSEN_ROW");
+				break;
 			}
-			break;
-		case 'B':
-			if (removingPlayerColor.compare("w:") == 0)
-			{
-				errorInfo = "WRONG_COLOR_OF_CHOSEN_ROW";
-				return 0;
-			}
-			break;
-		default:
-			throw WrongGameStateSettingsException("UNKNOWN_COLOR_CHOSEN_ROW");
-			break;
-		}
-		string removingRowBeginIndex;
-		string removingRowEndIndex;
-		cin >> removingRowBeginIndex;
-		cin >> removingRowEndIndex;
-		Coord RowBeginIndex = ConvertCoordinates(removingRowBeginIndex);
-		Coord RowEndIndex = ConvertCoordinates(removingRowEndIndex);
+			string removingRowBeginIndex;
+			string removingRowEndIndex;
+			cin >> removingRowBeginIndex;
+			cin >> removingRowEndIndex;
+			Coord RowBeginIndex = ConvertCoordinates(removingRowBeginIndex);
+			Coord RowEndIndex = ConvertCoordinates(removingRowEndIndex);
 
-		if (this->kInRowsconflictingRows[0] !=  NULL)
-			if(this->kInRowsconflictingRows[0]->row.front() == RowBeginIndex &&
-			this->kInRowsconflictingRows[0]->row.back() == RowEndIndex ||
-			this->kInRowsconflictingRows[0]->row.front() == RowEndIndex &&
-			this->kInRowsconflictingRows[0]->row.back() == RowBeginIndex)
-		{
-			RemoveKinRow(this->kInRowsconflictingRows[0]);
-			removedConflictingRowsCount++;
+			if (this->kInRowsconflictingRows[0] != NULL)
+				if (this->kInRowsconflictingRows[0]->row.front() == RowBeginIndex &&
+					this->kInRowsconflictingRows[0]->row.back() == RowEndIndex ||
+					this->kInRowsconflictingRows[0]->row.front() == RowEndIndex &&
+					this->kInRowsconflictingRows[0]->row.back() == RowBeginIndex)
+				{
+					RemoveKinRow(this->kInRowsconflictingRows[0]);
+					removedConflictingRowsCount++;
+				}
+			if (this->kInRowsconflictingRows[1] != NULL)
+				if (this->kInRowsconflictingRows[1]->row.front() == RowBeginIndex &&
+					this->kInRowsconflictingRows[1]->row.back() == RowEndIndex ||
+					this->kInRowsconflictingRows[1]->row.front() == RowEndIndex &&
+					this->kInRowsconflictingRows[1]->row.back() == RowBeginIndex)
+				{
+					RemoveKinRow(this->kInRowsconflictingRows[1]);
+					removedConflictingRowsCount++;
+				}
+			if (this->kInRowsconflictingRows[2] != NULL)
+				if (this->kInRowsconflictingRows[2]->row.front() == RowBeginIndex &&
+					this->kInRowsconflictingRows[2]->row.back() == RowEndIndex ||
+					this->kInRowsconflictingRows[2]->row.front() == RowEndIndex &&
+					this->kInRowsconflictingRows[2]->row.back() == RowBeginIndex)
+				{
+					RemoveKinRow(this->kInRowsconflictingRows[2]);
+					removedConflictingRowsCount++;
+				}
+			if (!removedConflictingRowsCount)
+			{
+				errorInfo = "WRONG_INDEX_OF_CHOSEN_ROW";
+				return 0;
+			}
 		}
-		if (this->kInRowsconflictingRows[1] != NULL)
-			if(this->kInRowsconflictingRows[1]->row.front() == RowBeginIndex &&
-			this->kInRowsconflictingRows[1]->row.back() == RowEndIndex ||
-			this->kInRowsconflictingRows[1]->row.front() == RowEndIndex &&
-			this->kInRowsconflictingRows[1]->row.back() == RowBeginIndex)
+		for (KInRow kInRow : kInRowsIndexes)
 		{
-			RemoveKinRow(this->kInRowsconflictingRows[1]);
-			removedConflictingRowsCount++;
-		}
-		if (this->kInRowsconflictingRows[2] != NULL)
-			if (this->kInRowsconflictingRows[2]->row.front() == RowBeginIndex &&
-			this->kInRowsconflictingRows[2]->row.back() == RowEndIndex ||
-			this->kInRowsconflictingRows[2]->row.front() == RowEndIndex &&
-			this->kInRowsconflictingRows[2]->row.back() == RowBeginIndex)
-		{
-			RemoveKinRow(this->kInRowsconflictingRows[2]);
-			removedConflictingRowsCount++;
-		}
-		if (!removedConflictingRowsCount)
-		{
-			errorInfo = "WRONG_INDEX_OF_CHOSEN_ROW";
-			return 0;
+			RemoveKinRow(&kInRow);
 		}
 	}
-	int removed = removedConflictingRowsCount;
-	for (KInRow kInRow : kInRowsIndexes)
+	else
 	{
-		RemoveKinRow(&kInRow);
+		RemoveKinRow(this->kInRowsconflictingRows[rowToRemove]);
+		removedConflictingRowsCount++;
 	}
 	this->kInRowsIndexes.clear();
-	delete this->kInRowsconflictingRows[0];
-	delete this->kInRowsconflictingRows[1];
-	delete this->kInRowsconflictingRows[2];
-	this->kInRowsconflictingRows[0] = NULL;
-	this->kInRowsconflictingRows[1] = NULL;
-	this->kInRowsconflictingRows[2] = NULL;
-	return removed;
+	//delete this->kInRowsconflictingRows[0];
+	//delete this->kInRowsconflictingRows[1];
+	//delete this->kInRowsconflictingRows[2];
+	//this->kInRowsconflictingRows[0] = NULL;
+	//this->kInRowsconflictingRows[1] = NULL;
+	//this->kInRowsconflictingRows[2] = NULL;
+	CheckForGameOver();
+	return removedConflictingRowsCount;
 }
 
 string GIPFEngine::CheckPawnsNumber()
@@ -776,10 +936,106 @@ string GIPFEngine::CheckPawnsNumber()
 			}
 		}
 	}
-	if (countedGWFields + gw_res > gw) return "WRONG_WHITE_PAWNS_NUMBER";
-	if (countedGBFields + gb_res > gb) return "WRONG_BLACK_PAWNS_NUMBER";
-	if (countedStartFields != s * 6) return "WRONG_START_PAWNS_NUMBER";;
-	//if (countedEmptyFields != ???) return false;
-	//if (countedForbiddenFields != ? ? ? ) return false;
+	if (countedGWFields + gw_res > gw)
+	{
+		board.clear();
+		return "WRONG_WHITE_PAWNS_NUMBER";
+	}
+	if (countedGBFields + gb_res > gb)
+	{
+		board.clear();
+		return "WRONG_BLACK_PAWNS_NUMBER";
+	}
+	if (countedStartFields != s * 6)
+	{
+		board.clear();
+		return "WRONG_START_PAWNS_NUMBER";
+	}
 	return "BOARD_STATE_OK";
+}
+
+int GIPFEngine::AddAllMoves(Coord dest)
+{
+	for (int dir = 1; dir < N + 1; dir++)
+	{
+		Coord sour = SpecifyNextFieldCoord(dest, static_cast<Direction>(dir));
+		Coord next = SpecifyNextFieldCoord(dest, GetOppositeDirection( static_cast<Direction>(dir)));
+
+		if (this->board[sour.first][sour.second] == startField)
+		{
+			if (this->board[next.first][next.second] != startField)
+			{
+				allMoves.push_back(pair<Coord, Coord>(sour, dest));
+			}
+		}
+	}
+	return allMoves.size();
+}
+
+void GIPFEngine::CheckForGameOver()
+{
+	if (emptyFieldsLeft == 0)
+	{
+		gameOver = true;
+		winner = activePlayer + 1;
+		return;
+	}
+	if (gw_res == 0 && activePlayer == Player::first ||
+		gb_res == 0 && activePlayer == Player::second)
+	{
+		gameOver = true;
+		winner = activePlayer + 1;
+		return;
+	}
+	switch (activePlayer)
+	{
+	case Player::first:
+		if (this->gb_res == 0)
+		{
+			gameOver = true;
+			winner = Player::first;
+		}
+		return;
+	case Player::second:
+		if (this->gw_res == 0)
+		{
+			gameOver = true;
+			winner = Player::second;
+		}
+		return;
+	}
+	return;
+}
+
+void GIPFEngine::ComputeAllMoves()
+{
+	int allMovesSize = 6 * (2 * (s - 2) + 3);
+	if (allMoves.size() == allMovesSize) return;
+	allMoves.clear();
+	allMoves.resize(0);
+	for (Coord i = Coord(1, 1); i.second < s; i = SpecifyNextFieldCoord(i, E))
+	{
+		AddAllMoves(i);
+	}
+	for (Coord i = Coord(1, s); i.second < diag - 2; i = SpecifyNextFieldCoord(i, SE))
+	{
+		AddAllMoves(i);
+	}
+	for (Coord i = Coord(s, diag - 2); i.first < diag - 2; i = SpecifyNextFieldCoord(i, S))
+	{
+		AddAllMoves(i);
+	}
+	for (Coord i = Coord(diag - 2, diag - 2); i.second > s; i = SpecifyNextFieldCoord(i, W))
+	{
+		AddAllMoves(i);
+	}
+	for (Coord i = Coord(diag - 2, s); i.second > 1; i = SpecifyNextFieldCoord(i, NW))
+	{
+		AddAllMoves(i);
+	}
+	for (Coord i = Coord(s, 1); i.first > 1; i = SpecifyNextFieldCoord(i, N))
+	{
+		AddAllMoves(i);
+	}
+
 }

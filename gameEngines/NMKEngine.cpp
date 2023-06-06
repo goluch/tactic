@@ -38,30 +38,6 @@ NMKEngine::~NMKEngine()
 	board.clear();
 }
 
-int NMKEngine::Evaluate(Player activePlayer) {
-	if (this->gameOver)
-	{
-		if (this->winner == Player::undefined)
-			return 0;
-		if (this->winner == Player::first)
-			return 1;
-		else
-		{
-			return -1;
-		}
-	}
-	// max node
-	else if (activePlayer == Player::first)
-	{
-		return INT_MIN;
-	}
-	// min node
-	else
-	{
-		return INT_MAX;
-	}
-}
-
 GameEngine* NMKEngine::GeneratePossibleMoves(int& generatedMovesCount, Player activePlayer)
 {
 	if (!this->gameOver)

@@ -149,6 +149,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="tests_GIPF\0.in" />
+    <None Include="tests_GIPF\0.out" />
     <None Include="tests_GIPF\1.in" />
     <None Include="tests_GIPF\1.out" />
     <None Include="tests_GIPF\2.in" />
@@ -159,6 +161,22 @@
     <None Include="tests_GIPF\4.out" />
     <None Include="tests_GIPF\5.in" />
     <None Include="tests_GIPF\5.out" />
+    <None Include="tests_GIPF\6.in" />
+    <None Include="tests_GIPF\6.out" />
+    <None Include="tests_GIPF\6a.in" />
+    <None Include="tests_GIPF\6a.out" />
+    <None Include="tests_GIPF\7.in" />
+    <None Include="tests_GIPF\7.out" />
+    <None Include="tests_GIPF\7a.in" />
+    <None Include="tests_GIPF\7a.out" />
+    <None Include="tests_GIPF\8.in" />
+    <None Include="tests_GIPF\8.out" />
+    <None Include="tests_GIPF\8a.in" />
+    <None Include="tests_GIPF\8a.out" />
+    <None Include="tests_GIPF\9.in" />
+    <None Include="tests_GIPF\9.out" />
+    <None Include="tests_GIPF\9a.in" />
+    <None Include="tests_GIPF\9a.out" />
     <None Include="tests_GIPF\test.in" />
     <None Include="tests_GIPF\test.out" />
   </ItemGroup>

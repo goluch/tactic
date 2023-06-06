@@ -1,6 +1,8 @@
 #ifndef MINMAXALG
 #define MINMAXALG
 
+//#define PRINTING
+
 #pragma once
 #include "utils.h"
 #include "GameEngine.h"
@@ -49,10 +51,9 @@ namespace gameSolver
         {
             int score = gameState.Evaluate(activePlayer);
 
-            //if (NMKEngine::ShowNodes)
-            //{
-            //    std::cout << gameState.GetGameState() << "Result: " << score << endl;
-            //}
+#ifdef PRINTING
+            cout << gameState.GetGameState() << "Result: " << score << endl;
+#endif //PRINTING
 
             if (score >= -1 && score <= 1)
             {
@@ -60,17 +61,14 @@ namespace gameSolver
             }
             int movesCount;
             G* allPossibleMoves = (G*)gameState.GeneratePossibleMoves(movesCount, activePlayer);
-            // ************** drukowanie **************
-            //if (NMKEngine::ShowNodes)
-            //{
-            //    for (int i = 0; i < movesCount; i++)
-            //    {
-            //        if (i) { cout << "------" << endl; }
-            //        std::cout << allPossibleMoves[i].GetGameState();
-            //    }
-            //    std::cout << "******" << endl;
-            //}
-            // *********** koniec drukowania ***********
+#ifdef PRINTING
+            for (int i = 0; i < movesCount; i++)
+            {
+                if (i) { cout << "------" << endl; }
+                cout << allPossibleMoves[i].GetGameState();
+            }
+            cout << "******" << endl;
+#endif //PRINTING
             if (activePlayer == Player::first)
             {
                 int best = INT_MIN;

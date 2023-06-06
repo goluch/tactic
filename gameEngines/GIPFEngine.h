@@ -12,7 +12,7 @@ namespace gameEngines
 
 	enum Direction
 	{
-		Unknown, E, S, SE, W, N, NW
+		Unknown, E, SE, S, W, NW, N
 	};
 
 	class KInRow
@@ -35,17 +35,26 @@ namespace gameEngines
     {
     public:
 
+		Player activePlayer;
+		bool cutIfGameOver = false;
+
+		GIPFEngine& operator=(GIPFEngine g);
+		bool operator==(GIPFEngine const& g);
+		bool operator!=(GIPFEngine const& g);
+
 		GIPFEngine();
+		GIPFEngine(GIPFEngine& g);
 		~GIPFEngine();
 
-		virtual int Evaluate(Player);
-		virtual GameEngine* GeneratePossibleMoves(int& count, Player activePlayer);
+		virtual GameEngine* GeneratePossibleMoves(int& count, Player activePlayer = Player::undefined);
 		virtual string SetGameState(istream& newGameState);
 		virtual string GetGameState();
 		string CheckPawnsNumber();
 		string DoMove(string move);
+		string DoMove(Coord sour, Coord dest);
+		string DoMoveWithoutRemovingRows(Coord sour, Coord dest);
 		int CheckKInRow();
-		int RemoveKInRows(string& errorInfo);
+		int RemoveKInRows(string& errorInfo, int rowToRemove = -1);
 
     private:
 
@@ -56,9 +65,9 @@ namespace gameEngines
 		int gb;
 		int gw_res;
 		int gb_res;
+		int emptyFieldsLeft;
 		int diag;
 		char value;
-		Player activePlayer;
 		int collisionInKInRowsNumber;
 		vector<KInRow> kInRowsIndexes;
 		KInRow* kInRowsconflictingRows[3];
@@ -72,6 +81,7 @@ namespace gameEngines
 		static const char startField;
 		static const char emptyField;
 		static const char forbiddenField;
+		static vector<pair<Coord, Coord>> allMoves;
 
 		Direction SpecifyDirection(Coord sour, Coord dest);
 		Direction GetOppositeDirection(Direction moveDir);
@@ -86,6 +96,10 @@ namespace gameEngines
 		bool UpdatePlayersReserves(Coord tmpCoord, char kInRowColor);
 		bool RemoveKinRow(KInRow* kInRow);
 		void ClearGameState();
+		int AddAllMoves(Coord i);
+		void ComputeAllMoves();
+		void CheckForGameOver();
+		void ClearAndAssign(GIPFEngine const& g);
     };
 
 }

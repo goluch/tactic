@@ -25,7 +25,6 @@ namespace gameEngines
         //NMKEngine(NMKEngine&);
         ~NMKEngine();
 
-        virtual int Evaluate(Player);
         virtual GameEngine* GeneratePossibleMoves(int&, Player);
         virtual string GetGameState();
         virtual string SetGameState(istream&);

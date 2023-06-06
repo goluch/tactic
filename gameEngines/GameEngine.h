@@ -33,7 +33,7 @@ namespace gameEngines
         /// </summary>
         /// <param name="player">The player from whose point of view the evaluation is done</param>
         /// <returns>Game state evaluation value from the selected player's point of view</returns>
-        virtual int Evaluate(Player player) = 0;
+        virtual int Evaluate(Player activePlayer);
         /// <summary>
         /// Generates all possible moves without repetition.
         /// </summary>
